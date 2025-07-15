@@ -6,31 +6,27 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/07/09 18:57:05 by anpollan         ###   ########.fr        #
+#    Updated: 2025/07/14 20:40:20 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SERVER		= server
-CLIENT		= client
+NAME		= fdf
 LIBFT		= ./libft/libft.a
+MLX			= ./mlx/libmlx_Linux.a
 SRCS_DIR	= ./srcs/
 INCL_DIR	= ./incl/
-SERVER_SRCS	= ./srcs/server.c
-CLIENT_SRCS = ./srcs/client.c
-SHARED_SRCS = ./srcs/minitalk_utils.c
-SERVER_OBJS	= $(SERVER_SRCS:%.c=%.o)
-CLIENT_OBJS	= $(CLIENT_SRCS:%.c=%.o)
-SHARED_OBJS = $(SHARED_SRCS:%.c=%.o)
-HEADER		= ./incl/minitalk.h
+SRCS 		= ./srcs/main.c \
+			  ./srcs/memory_and_error.c
+OBJS 		= $(SRCS:%.c=%.o)
+HEADER		= ./incl/fdf.h
 C_FLAGS		= -Wall -Wextra -Werror -g
+MLXFLAGS	= -lXext -lX11 -lm
+#MLXFLAGS	= -lmlx -lXext -lX11
 
-all: $(SERVER) $(CLIENT)
+all: $(NAME)
 
-$(SERVER): $(SERVER_OBJS) $(SHARED_OBJS) $(LIBFT)
-	cc $(C_FLAGS) $(SERVER_OBJS) $(SHARED_OBJS) $(LIBFT) -o $(SERVER)
-
-$(CLIENT): $(CLIENT_OBJS) $(SHARED_OBJS) $(LIBFT)
-	cc $(C_FLAGS) $(CLIENT_OBJS) $(SHARED_OBJS) $(LIBFT) -o $(CLIENT)
+$(NAME): $(OBJS) $(LIBFT)
+	cc $(C_FLAGS) $(OBJS) $(LIBFT) $(MLX) $(MLXFLAGS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C libft
@@ -39,11 +35,11 @@ $(LIBFT):
 	cc $(C_FLAGS) -c $< -o $@
 
 clean: 
-	rm -rf $(CLIENT_OBJS) $(SERVER_OBJS) $(SHARED_OBJS)
+	rm -rf $(OBJS)
 	$(MAKE) -C libft clean
 
 fclean: clean
-	rm -rf $(SERVER) $(CLIENT) compile_commands.json
+	rm -rf $(NAME) compile_commands.json
 	$(MAKE) -C libft fclean
 
 re: fclean all

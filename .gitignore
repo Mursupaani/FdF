@@ -2,4 +2,4 @@
 *.json
 *.sh
 libft/
-cache/
+.cache/
