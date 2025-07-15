@@ -14,13 +14,18 @@
 
 static t_mlx	*initialize_mlx_display(void);
 static bool		is_fdf_file(const char *filename);
+int				destroy_notify_hook(void *param);
 int				keypress_hook(int keycode, void *param);
+
+void	*test_malloc(void)
+{
+	return (NULL);
+}
 
 int	main(int argc, char *argv[])
 {
 	t_mlx	*mlx;
 	int		fd;
-	char	*line;
 
 	if (argc != 2 || argv[1][0] == '\0')
 		return (1);
@@ -29,20 +34,13 @@ int	main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		exit_error(NULL, FD_ERR);
-	line = get_next_line(fd);
-	ft_printf("%s", line);
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		ft_printf("%s", line);
-	}
 	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx = initialize_mlx_display();
 	mlx_pixel_put(mlx->mlx, mlx->mlx_win, 10, 10, 0x00FFFFFF);
 	mlx_string_put(mlx->mlx, mlx->mlx_win, 100, 100, 0x00FF0000, "Testing");
 	// mlx_put_image_to_window(mlx, mlx_win, img->img, 0,0);
 	mlx_hook(mlx->mlx_win, KeyPress, KeyPressMask, keypress_hook, mlx);
+	mlx_hook(mlx->mlx_win, DestroyNotify, 0, destroy_notify_hook, mlx);
 	mlx_loop(mlx->mlx);
 	return (0);
 }
@@ -62,6 +60,15 @@ int	keypress_hook(int keycode, void *param)
 	mlx = (t_mlx *)param;
 	if (keycode == XK_Escape)
 		exit_success(mlx);
+	return (0);
+}
+
+int	destroy_notify_hook(void *param)
+{
+	t_mlx	*mlx;
+
+	mlx = (t_mlx *)param;
+	exit_success(mlx);
 	return (0);
 }
 
