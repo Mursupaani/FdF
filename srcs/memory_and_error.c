@@ -19,10 +19,22 @@ void	exit_success(t_mlx *mlx)
 	exit(EXIT_SUCCESS);
 }
 
-void	exit_error(t_mlx *mlx)
+void	exit_error(t_mlx *mlx, int error)
 {
 	if (mlx)
 		free_memory(mlx);
+	if (error == FILETYPE_ERR)
+		ft_putstr_fd("is_fdf_file: Invalid file type.\n", STDERR_FILENO);
+	if (error == FD_ERR)
+		perror("open");
+	if (error == MLX_STRUCT_ERR)
+		perror("malloc");
+	else if (error == MLX_INIT_ERR)
+		perror("mlx_init");
+	else if (error == MLX_WIN_ERR)
+		perror("mlx_win");
+	else if (error == MLX_IMG_ERR)
+		perror("mlx_new_image");
 	exit(EXIT_FAILURE);
 }
 
@@ -31,23 +43,13 @@ void	free_memory(t_mlx *mlx)
 	if (!mlx)
 		return ;
 	if (mlx->img)
-	{
 		mlx_destroy_image(mlx->mlx, mlx->img);
-		ft_printf("destroy image\n");
-	}
 	if (mlx->mlx_win)
-	{
 		mlx_destroy_window(mlx->mlx, mlx->mlx_win);
-		ft_printf("destroy window\n");
-	}
 	if (mlx->mlx)
 	{
 		mlx_destroy_display(mlx->mlx);
-		ft_printf("destroy display\n");
+		free(mlx->mlx);
 	}
-	if (mlx)
-	{
 	free(mlx);
-		ft_printf("freed mlx\n");
-	}
 }

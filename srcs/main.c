@@ -13,14 +13,30 @@
 #include "../incl/fdf.h"
 
 static t_mlx	*initialize_mlx_display(void);
+static bool		is_fdf_file(const char *filename);
 int				keypress_hook(int keycode, void *param);
 
 int	main(int argc, char *argv[])
 {
 	t_mlx	*mlx;
+	int		fd;
+	char	*line;
 
 	if (argc != 2 || argv[1][0] == '\0')
 		return (1);
+	if (!is_fdf_file(argv[1]))
+		exit_error(NULL, FILETYPE_ERR);
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		exit_error(NULL, FD_ERR);
+	line = get_next_line(fd);
+	ft_printf("%s", line);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+		ft_printf("%s", line);
+	}
 	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx = initialize_mlx_display();
 	mlx_pixel_put(mlx->mlx, mlx->mlx_win, 10, 10, 0x00FFFFFF);
@@ -55,16 +71,29 @@ static t_mlx	*initialize_mlx_display(void)
 
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	if (!mlx)
-		exit_error(mlx);
+		exit_error(mlx, MLX_STRUCT_ERR);
 	mlx->mlx = mlx_init();
 	if (!mlx->mlx)
-		exit_error(mlx);
+		exit_error(mlx, MLX_INIT_ERR);
 	mlx->mlx_win = mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FdF");
 	if (!mlx->mlx_win)
-		exit_error(mlx);
+		exit_error(mlx, MLX_WIN_ERR);
 	mlx->img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!mlx->img)
-		exit_error(mlx);
+		exit_error(mlx, MLX_IMG_ERR);
 	mlx->img_pixels = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	return (mlx);
+}
+
+static bool	is_fdf_file(const char *filename)
+{
+	int	strlen;
+
+	strlen = ft_strlen(filename);
+	if (strlen < 4)
+		return (false);
+	if (!ft_strncmp(filename + strlen - 4, ".fdf", 4))
+		return (true);
+	else
+		return (false);
 }
