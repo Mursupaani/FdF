@@ -62,7 +62,8 @@ enum Error_types
 	MLX_INIT_ERR,
 	MLX_WIN_ERR,
 	MLX_IMG_ERR,
-	MATRIX_ERR
+	MATRIX_ERR,
+	PARSING_ERR
 }	;
 
 void	start_fdf(t_app *fdf);

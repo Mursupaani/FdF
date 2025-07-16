@@ -37,7 +37,8 @@ int	main(int argc, char *argv[])
 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, 10, 10, 0x00FFFFFF);
 	// mlx_string_put(fdf->mlx, fdf->mlx_win, 100, 100, 0x00FF0000, "Testing");
 	// mlx_loop(fdf->mlx);
-	ft_printf("Line count in fdf file: %d\n", fdf->matrix_height);
+	ft_printf("Matrix width in fdf file: %d\n", fdf->matrix_width);
+	ft_printf("Matrix height in fdf file: %d\n", fdf->matrix_height);
 	exit_success(fdf);
 	return (0);
 }
@@ -87,6 +88,8 @@ static t_app	*initialize_app(char *file_path)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
 	fdf->file_path = file_path;
+	fdf->matrix_height = 0;
+	fdf->matrix_width = 0;
 	mlx_hook(fdf->mlx_win, KeyPress, KeyPressMask, keypress_hook, fdf);
 	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
 	return (fdf);

@@ -39,6 +39,8 @@ void	exit_error(t_app *fdf, int error)
 		perror("mlx_new_image");
 	if (error == MATRIX_ERR)
 		ft_putstr_fd("parse_fdf_file: Error in creating matrix.\n", STDERR_FILENO);
+	if (error == PARSING_ERR)
+		ft_putstr_fd("parse_fdf_file: Error in file contents.\n", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 
