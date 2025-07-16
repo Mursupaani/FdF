@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/14 20:54:54 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:34:24 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 
-typedef struct s_mlx
+typedef struct s_app
 {
+	char	*file_path;
 	void	*mlx;
 	void	*mlx_win;
 	void	*img;
@@ -40,20 +41,34 @@ typedef struct s_mlx
 	int		endian;
 	int		screen_width;
 	int		screen_height;
-}	t_mlx;
+	int		**matrix;
+	int		matrix_width;
+	int		matrix_height;
+}	t_app;
+
+typedef struct s_matrix
+{
+	int	**matrix;
+	int	matrix_width;
+	int	matrix_height;
+}	t_matrix;
 
 enum Error_types
 {
+	MALLOC_ERR,
 	FILETYPE_ERR,
 	FD_ERR,
-	MLX_STRUCT_ERR,
+	FDF_STRUCT_ERR,
 	MLX_INIT_ERR,
 	MLX_WIN_ERR,
 	MLX_IMG_ERR,
+	MATRIX_ERR
 }	;
 
-void	free_memory(t_mlx *mlx);
-void	exit_success(t_mlx *mlx);
-void	exit_error(t_mlx *mlx, int error);
+void	start_fdf(t_app *fdf);
+int		**parse_fdf_file(t_app *fdf);
+void	free_memory(t_app *fdf);
+void	exit_success(t_app *fdf);
+void	exit_error(t_app *fdf, int error);
 
 #endif

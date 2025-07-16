@@ -6,28 +6,30 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 20:37:32 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/14 20:57:03 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:30:02 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
 
-void	exit_success(t_mlx *mlx)
+static void	free_matrix(int **matrix);
+
+void	exit_success(t_app *fdf)
 {
-	if (mlx)
-		free_memory(mlx);
+	if (fdf)
+		free_memory(fdf);
 	exit(EXIT_SUCCESS);
 }
 
-void	exit_error(t_mlx *mlx, int error)
+void	exit_error(t_app *fdf, int error)
 {
-	if (mlx)
-		free_memory(mlx);
+	if (fdf)
+		free_memory(fdf);
 	if (error == FILETYPE_ERR)
 		ft_putstr_fd("is_fdf_file: Invalid file type.\n", STDERR_FILENO);
 	if (error == FD_ERR)
 		perror("open");
-	if (error == MLX_STRUCT_ERR)
+	if (error == FDF_STRUCT_ERR)
 		perror("malloc");
 	else if (error == MLX_INIT_ERR)
 		perror("mlx_init");
@@ -35,21 +37,37 @@ void	exit_error(t_mlx *mlx, int error)
 		perror("mlx_win");
 	else if (error == MLX_IMG_ERR)
 		perror("mlx_new_image");
+	if (error == MATRIX_ERR)
+		ft_putstr_fd("parse_fdf_file: Error in creating matrix.\n", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 
-void	free_memory(t_mlx *mlx)
+void	free_memory(t_app *fdf)
 {
-	if (!mlx)
+	if (!fdf)
 		return ;
-	if (mlx->img)
-		mlx_destroy_image(mlx->mlx, mlx->img);
-	if (mlx->mlx_win)
-		mlx_destroy_window(mlx->mlx, mlx->mlx_win);
-	if (mlx->mlx)
+	if (fdf->img)
+		mlx_destroy_image(fdf->mlx, fdf->img);
+	if (fdf->mlx_win)
+		mlx_destroy_window(fdf->mlx, fdf->mlx_win);
+	if (fdf->mlx)
 	{
-		mlx_destroy_display(mlx->mlx);
-		free(mlx->mlx);
+		mlx_destroy_display(fdf->mlx);
+		free(fdf->mlx);
 	}
-	free(mlx);
+	if (fdf->matrix)
+		free_matrix(fdf->matrix);
+	free(fdf);
+}
+
+static void	free_matrix(int **matrix)
+{
+	int	i;
+
+	if (!matrix)
+		return ;
+	i = 0;
+	while (matrix[i])
+		free(matrix[i++]);
+	free(matrix);
 }

@@ -6,16 +6,16 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:49:40 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/14 20:57:07 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:35:32 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
 
-static t_mlx	*initialize_mlx_display(void);
+static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
-int				destroy_notify_hook(void *param);
-int				keypress_hook(int keycode, void *param);
+static int		destroy_notify_hook(void *param);
+static int		keypress_hook(int keycode, void *param);
 
 void	*test_malloc(void)
 {
@@ -24,24 +24,21 @@ void	*test_malloc(void)
 
 int	main(int argc, char *argv[])
 {
-	t_mlx	*mlx;
-	int		fd;
+	t_app	*fdf;
 
 	if (argc != 2 || argv[1][0] == '\0')
 		return (1);
 	if (!is_fdf_file(argv[1]))
 		exit_error(NULL, FILETYPE_ERR);
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		exit_error(NULL, FD_ERR);
-	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	mlx = initialize_mlx_display();
-	mlx_pixel_put(mlx->mlx, mlx->mlx_win, 10, 10, 0x00FFFFFF);
-	mlx_string_put(mlx->mlx, mlx->mlx_win, 100, 100, 0x00FF0000, "Testing");
-	// mlx_put_image_to_window(mlx, mlx_win, img->img, 0,0);
-	mlx_hook(mlx->mlx_win, KeyPress, KeyPressMask, keypress_hook, mlx);
-	mlx_hook(mlx->mlx_win, DestroyNotify, 0, destroy_notify_hook, mlx);
-	mlx_loop(mlx->mlx);
+	fdf = initialize_app(argv[1]);
+	if (!fdf)
+		exit_error(fdf, FDF_STRUCT_ERR);
+	start_fdf(fdf);
+	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, 10, 10, 0x00FFFFFF);
+	// mlx_string_put(fdf->mlx, fdf->mlx_win, 100, 100, 0x00FF0000, "Testing");
+	// mlx_loop(fdf->mlx);
+	ft_printf("Line count in fdf file: %d\n", fdf->matrix_height);
+	exit_success(fdf);
 	return (0);
 }
 
@@ -55,41 +52,44 @@ int	main(int argc, char *argv[])
 
 int	keypress_hook(int keycode, void *param)
 {
-	t_mlx	*mlx;
+	t_app	*fdf;
 
-	mlx = (t_mlx *)param;
+	fdf = (t_app *)param;
 	if (keycode == XK_Escape)
-		exit_success(mlx);
+		exit_success(fdf);
 	return (0);
 }
 
 int	destroy_notify_hook(void *param)
 {
-	t_mlx	*mlx;
+	t_app	*fdf;
 
-	mlx = (t_mlx *)param;
-	exit_success(mlx);
+	fdf = (t_app *)param;
+	exit_success(fdf);
 	return (0);
 }
 
-static t_mlx	*initialize_mlx_display(void)
+static t_app	*initialize_app(char *file_path)
 {
-	t_mlx	*mlx;
+	t_app	*fdf;
 
-	mlx = (t_mlx *)malloc(sizeof(t_mlx));
-	if (!mlx)
-		exit_error(mlx, MLX_STRUCT_ERR);
-	mlx->mlx = mlx_init();
-	if (!mlx->mlx)
-		exit_error(mlx, MLX_INIT_ERR);
-	mlx->mlx_win = mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FdF");
-	if (!mlx->mlx_win)
-		exit_error(mlx, MLX_WIN_ERR);
-	mlx->img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (!mlx->img)
-		exit_error(mlx, MLX_IMG_ERR);
-	mlx->img_pixels = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-	return (mlx);
+	fdf = (t_app *)malloc(sizeof(t_app));
+	if (!fdf)
+		exit_error(fdf, FDF_STRUCT_ERR);
+	fdf->mlx = mlx_init();
+	if (!fdf->mlx)
+		exit_error(fdf, MLX_INIT_ERR);
+	fdf->mlx_win = mlx_new_window(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FdF");
+	if (!fdf->mlx_win)
+		exit_error(fdf, MLX_WIN_ERR);
+	fdf->img = mlx_new_image(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!fdf->img)
+		exit_error(fdf, MLX_IMG_ERR);
+	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
+	fdf->file_path = file_path;
+	mlx_hook(fdf->mlx_win, KeyPress, KeyPressMask, keypress_hook, fdf);
+	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
+	return (fdf);
 }
 
 static bool	is_fdf_file(const char *filename)

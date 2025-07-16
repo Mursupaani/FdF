@@ -6,7 +6,7 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/07/14 20:40:20 by anpollan         ###   ########.fr        #
+#    Updated: 2025/07/15 19:00:09 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ MLX			= ./mlx/libmlx_Linux.a
 SRCS_DIR	= ./srcs/
 INCL_DIR	= ./incl/
 SRCS 		= ./srcs/main.c \
-			  ./srcs/memory_and_error.c
+			  ./srcs/memory_and_error.c \
+			  ./srcs/fdf.c \
+			  ./srcs/parsing.c
 OBJS 		= $(SRCS:%.c=%.o)
 HEADER		= ./incl/fdf.h
 C_FLAGS		= -Wall -Wextra -Werror -g
