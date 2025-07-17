@@ -21,7 +21,8 @@ SRCS 		= ./srcs/main.c \
 			  ./srcs/memory_and_error.c \
 			  ./srcs/fdf.c \
 			  ./srcs/parsing.c \
-			  ./srcs/print_matrix.c
+			  ./srcs/print_matrix.c \
+			  ./srcs/dda.c
 OBJS 		= $(SRCS:%.c=%.o)
 HEADER		= ./incl/fdf.h
 C_FLAGS		= -Wall -Wextra -Werror -g
