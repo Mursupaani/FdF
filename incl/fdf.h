@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/17 12:57:44 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:36:32 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_app
 	int		matrix_width;
 	int		matrix_height;
 	float	dda_scalar;
+	float	projection_angle;
 }	t_app;
 
 typedef struct s_matrix
@@ -67,6 +68,11 @@ enum Error_types
 	PARSING_ERR,
 	GET_NEXT_LINE_ERR
 }	;
+enum Coordinate
+{
+	X,
+	Y
+}	;
 
 //WARN: Remove
 void	print_matrix(t_app *fdf);
@@ -76,5 +82,7 @@ int		**parse_fdf_file(t_app *fdf);
 void	free_memory(t_app *fdf);
 void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
+float	*calculate_destination_x_and_y(t_app *fdf, int x, int y);
+void	dda(t_app *fdf);
 
 #endif

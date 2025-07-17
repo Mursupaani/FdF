@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:49:40 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/17 13:08:08 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:36:44 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ int	main(int argc, char *argv[])
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
 	start_fdf(fdf);
-	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, 10, 10, 0x00FFFFFF);
-	// mlx_string_put(fdf->mlx, fdf->mlx_win, 100, 100, 0x00FF0000, "Testing");
-	// mlx_loop(fdf->mlx);
-	print_matrix(fdf);
+	dda(fdf);
+	mlx_loop(fdf->mlx);
+	// print_matrix(fdf);
 	exit_success(fdf);
 	return (0);
 }
@@ -91,7 +90,8 @@ static t_app	*initialize_app(char *file_path)
 	fdf->matrix = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
-	fdf->dda_scalar = 1.0f;
+	fdf->dda_scalar = 10.0f;
+	fdf->projection_angle = 30.0f;
 	initialize_hooks(fdf);
 	return (fdf);
 }
