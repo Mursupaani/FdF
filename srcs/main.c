@@ -36,18 +36,21 @@ int	main(int argc, char *argv[])
 		exit_error(fdf, FDF_STRUCT_ERR);
 	start_fdf(fdf);
 	dda(fdf);
+	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 	mlx_loop(fdf->mlx);
 	// print_matrix(fdf);
 	exit_success(fdf);
 	return (0);
 }
 
-void	my_mlx_pixel_put(t_app *fdf, int x, int y, int color)
+void	pixel_to_image(t_app *fdf, int x, int y, int color)
 {
-	char	*dst;
-
-	dst = fdf->img_pixels + (y * fdf->line_length + x * (fdf->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	char	*pixel;
+	int		offset;
+	
+	offset = (x * (fdf->bits_per_pixel / 8)) + (y * fdf->line_length);
+	pixel = fdf->img_pixels + offset;
+	*(int *)pixel = color;
 }
 
 int	keypress_hook(int keycode, void *param)
@@ -91,7 +94,9 @@ static t_app	*initialize_app(char *file_path)
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
 	fdf->dda_scalar = 10.0f;
-	fdf->projection_angle = 30.0f;
+	fdf->tile_width = 10;
+	fdf->tile_height = 10;
+	fdf->projection_angle = 0.0f;
 	initialize_hooks(fdf);
 	return (fdf);
 }

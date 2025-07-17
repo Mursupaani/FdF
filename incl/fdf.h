@@ -28,6 +28,7 @@
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
+# define deg_to_rad(deg) deg * (M_PI/180)
 
 typedef struct s_app
 {
@@ -46,6 +47,8 @@ typedef struct s_app
 	int		matrix_height;
 	float	dda_scalar;
 	float	projection_angle;
+	int		tile_height;
+	int		tile_width;
 }	t_app;
 
 typedef struct s_matrix
@@ -70,8 +73,8 @@ enum Error_types
 }	;
 enum Coordinate
 {
-	Y,
-	X
+	X,
+	Y
 }	;
 
 //WARN: Remove
@@ -84,6 +87,6 @@ void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
 float	*calculate_destination_x_and_y(t_app *fdf, int x, int y);
 void	dda(t_app *fdf);
-void	my_mlx_pixel_put(t_app *fdf, int x, int y, int color);
+void	pixel_to_image(t_app *fdf, int x, int y, int color);
 
 #endif
