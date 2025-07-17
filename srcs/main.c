@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:49:40 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/15 19:35:32 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:08:08 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
 static int		destroy_notify_hook(void *param);
 static int		keypress_hook(int keycode, void *param);
+static void		initialize_hooks(t_app *fdf);
 
 void	*test_malloc(void)
 {
@@ -36,7 +37,7 @@ int	main(int argc, char *argv[])
 	start_fdf(fdf);
 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, 10, 10, 0x00FFFFFF);
 	// mlx_string_put(fdf->mlx, fdf->mlx_win, 100, 100, 0x00FF0000, "Testing");
-	mlx_loop(fdf->mlx);
+	// mlx_loop(fdf->mlx);
 	print_matrix(fdf);
 	exit_success(fdf);
 	return (0);
@@ -90,8 +91,8 @@ static t_app	*initialize_app(char *file_path)
 	fdf->matrix = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
-	mlx_hook(fdf->mlx_win, KeyPress, KeyPressMask, keypress_hook, fdf);
-	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
+	fdf->dda_scalar = 1.0f;
+	initialize_hooks(fdf);
 	return (fdf);
 }
 
@@ -106,4 +107,10 @@ static bool	is_fdf_file(const char *filename)
 		return (true);
 	else
 		return (false);
+}
+
+static void		initialize_hooks(t_app *fdf)
+{
+	mlx_hook(fdf->mlx_win, KeyPress, KeyPressMask, keypress_hook, fdf);
+	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
 }

@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 18:44:45 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/15 19:21:16 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:07:36 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,5 @@ static void	parse_lines(t_app *fdf)
 		free(temp);
 		i++;
 	}
-	free(line);
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/15 19:34:24 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/17 12:57:44 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_app
 	int		**matrix;
 	int		matrix_width;
 	int		matrix_height;
+	float	dda_scalar;
 }	t_app;
 
 typedef struct s_matrix
