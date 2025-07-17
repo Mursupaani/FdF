@@ -12,7 +12,7 @@
 
 #include "../incl/fdf.h"
 
-static void	free_matrix(int **matrix);
+static void	free_matrix(t_app *fdf);
 
 void	exit_success(t_app *fdf)
 {
@@ -41,6 +41,8 @@ void	exit_error(t_app *fdf, int error)
 		ft_putstr_fd("parse_fdf_file: Error in creating matrix.\n", STDERR_FILENO);
 	if (error == PARSING_ERR)
 		ft_putstr_fd("parse_fdf_file: Error in file contents.\n", STDERR_FILENO);
+	if (error == GET_NEXT_LINE_ERR)
+		ft_putstr_fd("get_next_line: Something went wrong.\n", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 
@@ -58,18 +60,18 @@ void	free_memory(t_app *fdf)
 		free(fdf->mlx);
 	}
 	if (fdf->matrix)
-		free_matrix(fdf->matrix);
+		free_matrix(fdf);
 	free(fdf);
 }
 
-static void	free_matrix(int **matrix)
+static void	free_matrix(t_app *fdf)
 {
 	int	i;
 
-	if (!matrix)
+	if (!fdf->matrix)
 		return ;
 	i = 0;
-	while (matrix[i])
-		free(matrix[i++]);
-	free(matrix);
+	while (i < fdf->matrix_height)
+		free(fdf->matrix[i++]);
+	free(fdf->matrix);
 }

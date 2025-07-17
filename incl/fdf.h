@@ -63,8 +63,12 @@ enum Error_types
 	MLX_WIN_ERR,
 	MLX_IMG_ERR,
 	MATRIX_ERR,
-	PARSING_ERR
+	PARSING_ERR,
+	GET_NEXT_LINE_ERR
 }	;
+
+//WARN: Remove
+void	print_matrix(t_app *fdf);
 
 void	start_fdf(t_app *fdf);
 int		**parse_fdf_file(t_app *fdf);
