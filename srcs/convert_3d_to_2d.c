@@ -20,7 +20,7 @@ float	*calculate_destination_x_and_y(t_app *fdf, int x, int y)
 	coordinates = (float *)malloc(sizeof(float) * 2);
 	if (!coordinates)
 		exit_error(fdf, MALLOC_ERR);
-	z = fdf->matrix[x][y];
+	z = fdf->matrix[y][x];
 	coordinates[X] = (x - y) * cos(fdf->projection_angle);
 	coordinates[Y] = (x + y) * sin(fdf->projection_angle) - z;
 	return (coordinates);

@@ -70,8 +70,8 @@ enum Error_types
 }	;
 enum Coordinate
 {
-	X,
-	Y
+	Y,
+	X
 }	;
 
 //WARN: Remove
@@ -84,5 +84,6 @@ void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
 float	*calculate_destination_x_and_y(t_app *fdf, int x, int y);
 void	dda(t_app *fdf);
+void	my_mlx_pixel_put(t_app *fdf, int x, int y, int color);
 
 #endif
