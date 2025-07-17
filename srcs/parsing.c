@@ -90,6 +90,8 @@ static int	count_matrix_width(t_app *fdf, char *line)
 			i++;
 		while (line[i] == ' ' && line[i] != '\0')
 			i++;
+		if (line[i] == '-' || line[i] == '+')
+			i++;
 		if (!ft_strncmp(&line[i], "\n", 2) && (line[i + 1]) == '\0')
 			i++;
 		if (!ft_isdigit(line[i]) && line[i] != ' ' && line[i] != '\0')

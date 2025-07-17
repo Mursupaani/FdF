@@ -23,10 +23,10 @@ float	*calculate_destination_x_and_y(t_app *fdf, int x, int y)
 	if (!coordinates)
 		exit_error(fdf, MALLOC_ERR);
 	z = fdf->matrix[y][x];
-	coordinates[X] = ((float)x - (float)z) / 2 + 50;
-	coordinates[Y] = ((float)x + (float)y * 2 + (float)z) / 6 + 50;
-	(void)alpha;
-	// coordinates[X] = x * cosf(deg_to_rad(alpha)) + y * cosf(deg_to_rad(alpha + 120)) + z * cosf(deg_to_rad(alpha - 120)) + 50;
-	// coordinates[Y] = x * sinf(deg_to_rad(alpha)) + y * sinf(deg_to_rad(alpha + 120)) + z * sinf(deg_to_rad(alpha - 120)) + 50;
+	// coordinates[X] = ((float)x - (float)z) / 2 + 50;
+	// coordinates[Y] = ((float)x + (float)y * 2 + (float)z) / 6 + 50;
+	// (void)alpha;
+	coordinates[X] = x * cosf(deg_to_rad(alpha)) + y * cosf(deg_to_rad(alpha + 120)) + z * cosf(deg_to_rad(alpha - 120)) + 50;
+	coordinates[Y] = x * sinf(deg_to_rad(alpha)) + y * sinf(deg_to_rad(alpha + 120)) + z * sinf(deg_to_rad(alpha - 120)) + 50;
 	return (coordinates);
 }
