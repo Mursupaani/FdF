@@ -48,9 +48,12 @@ void	pixel_to_image(t_app *fdf, int x, int y, int color)
 	char	*pixel;
 	int		offset;
 	
-	offset = (x * (fdf->bits_per_pixel / 8)) + (y * fdf->line_length);
-	pixel = fdf->img_pixels + offset;
-	*(int *)pixel = color;
+	if (x < SCREEN_WIDTH && x >= 0 && y < SCREEN_HEIGHT && y >= 0)
+	{
+		offset = (x * (fdf->bits_per_pixel / 8)) + (y * fdf->line_length);
+		pixel = fdf->img_pixels + offset;
+		*(int *)pixel = color;
+	}
 }
 
 int	keypress_hook(int keycode, void *param)
@@ -93,7 +96,7 @@ static t_app	*initialize_app(char *file_path)
 	fdf->matrix = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
-	fdf->dda_scalar = 10.0f;
+	fdf->dda_scalar =  15.0f;
 	fdf->tile_width = 10;
 	fdf->tile_height = 10;
 	fdf->projection_angle = 0.0f;
