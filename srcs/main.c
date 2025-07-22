@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
+#include <float.h>
+#include <limits.h>
 
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
@@ -36,10 +38,16 @@ int	main(int argc, char *argv[])
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
 	start_fdf(fdf);
+	calculate_bounding_box(fdf);
+	ft_printf("xmin: %d\n", (int)fdf->proj_min_x);
+	ft_printf("xmax: %d\n", (int)fdf->proj_max_x);
+	ft_printf("ymin: %d\n", (int)fdf->proj_min_y);
+	ft_printf("ymax: %d\n", (int)fdf->proj_max_y);
 	draw_pixels_on_window(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
+	print_matrix(fdf, fdf->world);
+	print_matrix(fdf, fdf->screen);
 	mlx_loop(fdf->mlx);
-	print_matrix(fdf);
 	exit_success(fdf);
 	return (0);
 }
@@ -99,10 +107,14 @@ static t_app	*initialize_app(char *file_path)
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
 	fdf->img_scalar =  30.0f;
-	fdf->z_scalar = 0.5f;
+	fdf->z_scalar = 1;
 	fdf->x_centering_offset = 0;
 	fdf->y_centering_offset = 0;
 	fdf->projection_angle = 30.0f;
+	fdf->proj_min_x = FLT_MAX;
+	fdf->proj_max_x = FLT_MIN;
+	fdf->proj_min_y = FLT_MAX;
+	fdf->proj_max_y = FLT_MIN;
 	initialize_hooks(fdf);
 	return (fdf);
 }

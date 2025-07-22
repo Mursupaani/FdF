@@ -31,9 +31,9 @@
 
 typedef struct s_projection_pixel
 {
-	int	x;
-	int	y;
-	int	z;
+	float	x;
+	float	y;
+	float	z;
 }	t_pixel;
 
 typedef struct s_app
@@ -57,6 +57,10 @@ typedef struct s_app
 	float	z_scalar;
 	int		x_centering_offset;
 	int		y_centering_offset;
+	float	proj_min_x;
+	float	proj_max_x;
+	float	proj_min_y;
+	float	proj_max_y;
 }	t_app;
 
 typedef struct s_matrix
@@ -86,7 +90,8 @@ enum Coordinate
 }	;
 
 //WARN: Remove
-void	print_matrix(t_app *fdf);
+void	print_matrix(t_app *fdf, t_pixel **space);
+void	calculate_centering_offset(t_app *fdf);
 
 void	start_fdf(t_app *fdf);
 t_pixel	**parse_fdf_file(t_app *fdf);
@@ -98,6 +103,6 @@ void	exit_error(t_app *fdf, int error);
 void	calculate_projection_x_and_y(t_app *fdf, int x, int y);
 void	draw_pixels_on_window(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
-void	calculate_centering_offset(t_app *fdf);
+void	calculate_bounding_box(t_app *fdf);
 
 #endif

@@ -21,11 +21,41 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	float	z;
 	
 	z = fdf->world[y][x].z * fdf->z_scalar;
-	fdf->screen[y][x].z = (int)round(z);
-	fdf->screen[y][x].x = (int)round(calculate_x_projection(fdf, x, y));
-	fdf->screen[y][x].y = (int)round(calculate_y_projection(fdf, x, y, z));
-	fdf->screen[y][x].x += fdf->x_centering_offset;
-	fdf->screen[y][x].y += fdf->y_centering_offset;
+	fdf->screen[y][x].z = (z);
+	fdf->screen[y][x].x += fdf->img_scalar;
+	fdf->screen[y][x].y += fdf->img_scalar;
+	fdf->screen[y][x].x = (calculate_x_projection(fdf, x, y));
+	fdf->screen[y][x].y = (calculate_y_projection(fdf, x, y, z));
+}
+
+void	calculate_bounding_box(t_app *fdf)
+{
+	int	x;
+	int	y;
+
+	if (!fdf->screen)
+		fdf->screen = initialize_pixel_matrix(fdf);
+	if (!fdf->screen)
+		exit_error(fdf, MALLOC_ERR);
+	y = 0;
+	while (y < fdf->matrix_height)
+	{
+		x = 0;
+		while (x < fdf->matrix_width)
+		{
+			calculate_projection_x_and_y(fdf, x, y);
+			if (fdf->screen[y][x].x < fdf->proj_min_x)
+				fdf->proj_min_x = fdf->screen[y][x].x;
+			if (fdf->screen[y][x].x > fdf->proj_max_x)
+				fdf->proj_max_x = fdf->screen[y][x].x;
+			if (fdf->screen[y][x].y < fdf->proj_min_y)
+				fdf->proj_min_y = fdf->screen[y][x].y;
+			if (fdf->screen[y][x].y > fdf->proj_max_y)
+				fdf->proj_max_y = fdf->screen[y][x].y;
+			x++;
+		}
+		y++;
+	}
 }
 
 static float	calculate_x_projection(t_app *fdf, int x, int y)
