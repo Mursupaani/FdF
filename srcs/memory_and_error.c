@@ -12,7 +12,7 @@
 
 #include "../incl/fdf.h"
 
-static void	free_matrix(t_app *fdf);
+static void	free_matrix(t_app *fdf, t_pixel **space);
 
 void	exit_success(t_app *fdf)
 {
@@ -59,19 +59,21 @@ void	free_memory(t_app *fdf)
 		mlx_destroy_display(fdf->mlx);
 		free(fdf->mlx);
 	}
-	if (fdf->matrix)
-		free_matrix(fdf);
+	if (fdf->world_space)
+		free_matrix(fdf, fdf->world_space);
+	if (fdf->screen_space)
+		free_matrix(fdf, fdf->screen_space);
 	free(fdf);
 }
 
-static void	free_matrix(t_app *fdf)
+static void	free_matrix(t_app *fdf, t_pixel **space)
 {
 	int	i;
 
-	if (!fdf->matrix)
-		return ;
 	i = 0;
+	if (!fdf || !space)
+		return ;
 	while (i < fdf->matrix_height)
-		free(fdf->matrix[i++]);
-	free(fdf->matrix);
+		free(space[i++]);
+	free(space);
 }

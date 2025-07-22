@@ -39,7 +39,7 @@ int	main(int argc, char *argv[])
 	dda(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 	mlx_loop(fdf->mlx);
-	// print_matrix(fdf);
+	print_matrix(fdf);
 	exit_success(fdf);
 	return (0);
 }
@@ -94,13 +94,12 @@ static t_app	*initialize_app(char *file_path)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
 	fdf->file_path = file_path;
-	fdf->matrix = NULL;
+	fdf->world_space = NULL;
+	fdf->screen_space = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
 	fdf->dda_scalar =  15.0f;
-	fdf->tile_width = 10;
-	fdf->tile_height = 10;
-	fdf->projection_angle = 0.0f;
+	fdf->projection_angle = 30.0f;
 	initialize_hooks(fdf);
 	return (fdf);
 }

@@ -13,8 +13,8 @@ void	print_matrix(t_app *fdf)
 		j = 0;
 		while (j < fdf->matrix_width)
 		{
-			ft_printf("%d", fdf->matrix[i][j]);
-			if (fdf->matrix[i][j] == 0)
+			ft_printf("%d", fdf->world_space[i][j].z);
+			if (fdf->world_space[i][j].z == 0)
 				ft_printf("  ");
 			else
 				ft_printf(" ");

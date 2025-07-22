@@ -14,38 +14,58 @@
 
 static int	count_matrix_dimensions(t_app *fdf);
 static int	count_matrix_width(t_app *fdf, char *line);
-static int	**initialize_matrix(t_app *fdf);
 static void	parse_lines(t_app *fdf);
 
 //WARN: Make void?
-int	**parse_fdf_file(t_app *fdf)
+t_pixel	**parse_fdf_file(t_app *fdf)
 {
 	count_matrix_dimensions(fdf);
 	if (fdf->matrix_height == 0 || fdf->matrix_width == 0)
 		exit_error(fdf, PARSING_ERR);
-	initialize_matrix(fdf);
+	fdf->world_space = initialize_pixel_matrix(fdf, fdf->world_space);
 	parse_lines(fdf);
-	return (fdf->matrix);
+	return (fdf->world_space);
 }
 
 //WARN: Make void?
-static int	**initialize_matrix(t_app *fdf)
+t_pixel **initialize_pixel_matrix(t_app *fdf, t_pixel **space)
 {
 	int	i;
 
-	i = 0;
-	fdf->matrix = (int **)ft_calloc(1, sizeof(int *) * fdf->matrix_height);
-	if (!fdf->matrix)
+	if (!space)
+		space = (t_pixel **)malloc(sizeof(t_pixel *) * fdf->matrix_height);
+	ft_printf("height: %d\n", fdf->matrix_height);
+	ft_printf("width: %d\n", fdf->matrix_width);
+	if (!space)
 		exit_error(fdf, MALLOC_ERR);
+	i = 0;
 	while (i < fdf->matrix_height)
 	{
-		fdf->matrix[i] = (int *)ft_calloc(1, sizeof(int) * fdf->matrix_width);
-		if (!fdf->matrix[i])
+		space[i] = (t_pixel *)ft_calloc(1, sizeof(t_pixel) * fdf->matrix_width);
+		if (!space[i])
 			exit_error(fdf, MALLOC_ERR);
 		i++;
 	}
-	return (fdf->matrix);
+	return (space);
 }
+
+// static int	**initialize_matrix(t_app *fdf)
+// {
+// 	int	i;
+//
+// 	i = 0;
+// 	fdf->matrix = (int **)ft_calloc(1, sizeof(int *) * fdf->matrix_height);
+// 	if (!fdf->matrix)
+// 		exit_error(fdf, MALLOC_ERR);
+// 	while (i < fdf->matrix_height)
+// 	{
+// 		fdf->matrix[i] = (int *)ft_calloc(1, sizeof(int) * fdf->matrix_width);
+// 		if (!fdf->matrix[i])
+// 			exit_error(fdf, MALLOC_ERR);
+// 		i++;
+// 	}
+// 	return (fdf->matrix);
+// }
 
 //WARN: Make void?
 static int	count_matrix_dimensions(t_app *fdf)
@@ -117,16 +137,16 @@ static void	parse_lines(t_app *fdf)
 	int		fd;
 	char	*line;
 	char	**temp;
-	int		i;
-	int		j;
+	int		y;
+	int		x;
 
 	fd = open(fdf->file_path, O_RDONLY);
 	if (fd == -1)
 		exit_error(fdf, FD_ERR);
-	i = 0;
-	while (i < fdf->matrix_height)
+	y = 0;
+	while (y < fdf->matrix_height)
 	{
-		j = 0;
+		x = 0;
 		line = get_next_line(fd);
 		if (!line)
 			exit_error(fdf, GET_NEXT_LINE_ERR);
@@ -134,15 +154,59 @@ static void	parse_lines(t_app *fdf)
 		free(line);
 		if (!temp)
 			exit_error(fdf, MALLOC_ERR);
-		while (j < fdf->matrix_width)
+		while (x < fdf->matrix_width)
 		{
-			fdf->matrix[i][j] = ft_atoi(temp[j]);
-			free(temp[j]);
-			j++;
+			save_pixel_coordinates_to_matrix(fdf->world_space, x, y, ft_atoi(temp[x]));
+			free(temp[x]);
+			x++;
 		}
-		free(temp[j]);
+		free(temp[x]);
 		free(temp);
-		i++;
+		y++;
 	}
 	close(fd);
 }
+
+void	save_pixel_coordinates_to_matrix(t_pixel **space, int x, int y, int z)
+{
+	if (!space)
+		return ;
+	space[y][x].x = x;
+	space[y][x].y = y;
+	space[y][x].z = z;
+}
+
+// static void	parse_lines(t_app *fdf)
+// {
+// 	int		fd;
+// 	char	*line;
+// 	char	**temp;
+// 	int		i;
+// 	int		j;
+//
+// 	fd = open(fdf->file_path, O_RDONLY);
+// 	if (fd == -1)
+// 		exit_error(fdf, FD_ERR);
+// 	i = 0;
+// 	while (i < fdf->matrix_height)
+// 	{
+// 		j = 0;
+// 		line = get_next_line(fd);
+// 		if (!line)
+// 			exit_error(fdf, GET_NEXT_LINE_ERR);
+// 		temp = ft_split(line, ' ');
+// 		free(line);
+// 		if (!temp)
+// 			exit_error(fdf, MALLOC_ERR);
+// 		while (j < fdf->matrix_width)
+// 		{
+// 			fdf->matrix[i][j] = ft_atoi(temp[j]);
+// 			free(temp[j]);
+// 			j++;
+// 		}
+// 		free(temp[j]);
+// 		free(temp);
+// 		i++;
+// 	}
+// 	close(fd);
+// }
