@@ -59,10 +59,10 @@ void	free_memory(t_app *fdf)
 		mlx_destroy_display(fdf->mlx);
 		free(fdf->mlx);
 	}
-	if (fdf->world_space)
-		free_matrix(fdf, fdf->world_space);
-	if (fdf->screen_space)
-		free_matrix(fdf, fdf->screen_space);
+	if (fdf->world)
+		free_matrix(fdf, fdf->world);
+	if (fdf->screen)
+		free_matrix(fdf, fdf->screen);
 	free(fdf);
 }
 

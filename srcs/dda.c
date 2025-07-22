@@ -13,14 +13,16 @@
 #include "../incl/fdf.h"
 
 static void	dda_matrix_corner(t_app *fdf, int x, int y);
-// static void	dda_matrix_edge(t_app *fdf, int x, int y);
-// static void	dda_matrix_inside(t_app *fdf, int x, int y);
 
-void	dda(t_app *fdf)
+void	draw_pixels_on_window(t_app *fdf)
 {
 	int	x;
 	int	y;
 
+	if (!fdf->screen)
+		fdf->screen = initialize_pixel_matrix(fdf);
+	if (!fdf->screen)
+		exit_error(fdf, MALLOC_ERR);
 	y = 0;
 	while (y < fdf->matrix_height)
 	{
@@ -28,14 +30,6 @@ void	dda(t_app *fdf)
 		while (x < fdf->matrix_width)
 		{
 			dda_matrix_corner(fdf, x, y);
-			// if ((y == 0 || y == fdf->matrix_height)
-			// && (x == 0 || x == fdf-> matrix_width))
-			// 	dda_matrix_corner(fdf, x, y);
-			// else if ((y != 0 && y != fdf->matrix_height)
-			// 	&& (x != 0 && x != fdf->matrix_width))
-			// 	dda_matrix_inside(fdf, x, y);
-			// else
-			// 	dda_matrix_edge(fdf, x, y);
 			x++;
 		}
 		y++;
@@ -44,59 +38,11 @@ void	dda(t_app *fdf)
 
 static void	dda_matrix_corner(t_app *fdf, int x, int y)
 {
-	float	*c1;
 	float	dx;
 	float	dy;
 
-	c1 = calculate_projection_x_and_y(fdf, x, y);
-	pixel_to_image(fdf, (int)(c1[X] * fdf->dda_scalar), (int)(c1[Y] * fdf->dda_scalar), 0x00FFFFFF);
-	free(c1);
+	calculate_projection_x_and_y(fdf, x, y);
+	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, 0x00FFFFFF);
 	(void)dx;
 	(void)dy;
 }
-//
-// static void	dda_matrix_edge(t_app *fdf, int x, int y)
-// {
-// 	float	*c1;
-// 	float	*c2;
-// 	float	dx;
-// 	float	dy;
-//
-// 	c1 = calculate_destination_x_and_y(fdf, x, y);
-// 	c2 = calculate_destination_x_and_y(fdf, x + 1, y + 1);
-// 	dx = c2[X] - c1[X];
-// 	dy = c2[Y] - c1[Y];
-// 	ft_printf("x: %d\ty: %d\tz: %d\n", (int)c1[X], (int)c1[Y], fdf->matrix[y][x]);
-// 	pixel_to_image(fdf, (int)(c1[X] * fdf->dda_scalar), (int)(c1[Y] * fdf->dda_scalar), 0x00FFFFFF);
-// 	// pixel_to_image(fdf, x * 10, y * 10, 0x00FFFFFF);
-// 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, (int)(c1[X] * fdf->dda_scalar), (int)(c1[Y] * fdf->dda_scalar), 0x00FFFFFF);
-// 	// my_mlx_pixel_put(fdf, fabs(c1[X]), fabs(c1[Y]), 0x00FFFFFF);
-// 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, x, y, 0x00FFFFFF);
-// 	free(c1);
-// 	free(c2);
-// 	(void)dx;
-// 	(void)dy;
-// }
-//
-// static void	dda_matrix_inside(t_app *fdf, int x, int y)
-// {
-// float	*c1;
-// 	float	*c2;
-// 	float	dx;
-// 	float	dy;
-//
-// 	c1 = calculate_destination_x_and_y(fdf, x, y);
-// 	c2 = calculate_destination_x_and_y(fdf, x + 1, y + 1);
-// 	dx = c2[X] - c1[X];
-// 	dy = c2[Y] - c1[Y];
-// 	ft_printf("x: %d\ty: %d\tz: %d\n", (int)c1[X], (int)c1[Y], fdf->matrix[y][x]);
-// 	pixel_to_image(fdf, (int)(c1[X] * fdf->dda_scalar), (int)(c1[Y] * fdf->dda_scalar), 0x00FFFFFF);
-// 	// pixel_to_image(fdf, x * 10, y * 10, 0x00FFFFFF);
-// 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, (int)(c1[X] * fdf->dda_scalar), (int)(c1[Y] * fdf->dda_scalar), 0x00FFFFFF);
-// 	// my_mlx_pixel_put(fdf, fabs(c1[X]), fabs(c1[Y]), 0x00FFFFFF);
-// 	// mlx_pixel_put(fdf->mlx, fdf->mlx_win, x, y, 0x00FFFFFF);
-// 	free(c1);
-// 	free(c2);
-// 	(void)dx;
-// 	(void)dy;
-// }

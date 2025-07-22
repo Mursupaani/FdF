@@ -14,7 +14,7 @@
 
 void	start_fdf(t_app *fdf)
 {
-	fdf->world_space = parse_fdf_file(fdf);
-	if (!fdf->world_space)
+	fdf->world = parse_fdf_file(fdf);
+	if (!fdf->world)
 		exit_error(fdf, MALLOC_ERR);
 }

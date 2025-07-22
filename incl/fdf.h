@@ -38,7 +38,6 @@ typedef struct s_projection_pixel
 
 typedef struct s_app
 {
-	// int		**matrix;
 	char	*file_path;
 	void	*mlx;
 	void	*mlx_win;
@@ -53,8 +52,9 @@ typedef struct s_app
 	int		matrix_height;
 	float	dda_scalar;
 	float	projection_angle;
-	t_pixel	**world_space;
-	t_pixel	**screen_space;
+	t_pixel	**world;
+	t_pixel	**screen;
+	float	z_scalar;
 }	t_app;
 
 typedef struct s_matrix
@@ -88,14 +88,13 @@ void	print_matrix(t_app *fdf);
 
 void	start_fdf(t_app *fdf);
 t_pixel	**parse_fdf_file(t_app *fdf);
-t_pixel **initialize_pixel_matrix(t_app *fdf, t_pixel **space);
+t_pixel **initialize_pixel_matrix(t_app *fdf);
 void	save_pixel_coordinates_to_matrix(t_pixel **space, int x, int y, int z);
 void	free_memory(t_app *fdf);
 void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
-float	*calculate_projection_x_and_y(t_app *fdf, int x, int y);
-void	dda(t_app *fdf);
+void	calculate_projection_x_and_y(t_app *fdf, int x, int y);
+void	draw_pixels_on_window(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
-float	deg_to_rad(float deg);
 
 #endif

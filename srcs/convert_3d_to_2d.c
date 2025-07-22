@@ -12,25 +12,37 @@
 
 #include "../incl/fdf.h"
 
-float	*calculate_projection_x_and_y(t_app *fdf, int x, int y)
-{
-	float	*coordinates;
-	int		z;
+static float	deg_to_rad(float deg);
+static float	calculate_x_projection(t_app *fdf, int x, int y);
+static float	calculate_y_projection(t_app *fdf, int x, int y, int z);
 
-	coordinates = (float *)malloc(sizeof(float) * 2);
-	if (!coordinates)
-		exit_error(fdf, MALLOC_ERR);
-	z = fdf->world_space[y][x].z * 1;
-	// coordinates[X] = ((float)x - (float)y) / sqrtf(2);
-	// coordinates[Y] = ((float)x + (float)y - 2 * (float)z) / sqrtf(6);
-	coordinates[X] = (x - y) * cosf(deg_to_rad(fdf->projection_angle));
-	coordinates[Y] = (x + y) * sinf(deg_to_rad(fdf->projection_angle)) - z;
-	coordinates[X] += 50;
-	coordinates[Y] += 50;
-	return (coordinates);
+void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
+{
+	float	z;
+	
+	z = fdf->world[y][x].z * fdf->z_scalar;
+	fdf->screen[y][x].z = (int)round(z);
+	fdf->screen[y][x].x = (int)round(calculate_x_projection(fdf, x, y));
+	fdf->screen[y][x].y = (int)round(calculate_y_projection(fdf, x, y, z));
 }
 
-float	deg_to_rad(float deg)
+static float	calculate_x_projection(t_app *fdf, int x, int y)
+{
+	float	x_proj;
+
+	x_proj = (x - y) * cosf(deg_to_rad(fdf->projection_angle));
+	return (x_proj);
+}
+
+static float	calculate_y_projection(t_app *fdf, int x, int y, int z)
+{
+	float	y_proj;
+
+	y_proj = (x + y) * sinf(deg_to_rad(fdf->projection_angle)) - z;
+	return (y_proj);
+}
+
+static float	deg_to_rad(float deg)
 {
 	return (deg * (M_PI/180));
 }

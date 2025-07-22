@@ -36,7 +36,7 @@ int	main(int argc, char *argv[])
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
 	start_fdf(fdf);
-	dda(fdf);
+	draw_pixels_on_window(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 	mlx_loop(fdf->mlx);
 	print_matrix(fdf);
@@ -80,7 +80,7 @@ static t_app	*initialize_app(char *file_path)
 {
 	t_app	*fdf;
 
-	fdf = (t_app *)malloc(sizeof(t_app));
+	fdf = (t_app *)ft_calloc(1, sizeof(t_app));
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
 	fdf->mlx = mlx_init();
@@ -94,11 +94,12 @@ static t_app	*initialize_app(char *file_path)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
 	fdf->file_path = file_path;
-	fdf->world_space = NULL;
-	fdf->screen_space = NULL;
+	fdf->world = NULL;
+	fdf->screen = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
 	fdf->dda_scalar =  15.0f;
+	fdf->z_scalar = 0.5f;
 	fdf->projection_angle = 30.0f;
 	initialize_hooks(fdf);
 	return (fdf);
