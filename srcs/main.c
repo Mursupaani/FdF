@@ -98,8 +98,10 @@ static t_app	*initialize_app(char *file_path)
 	fdf->screen = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
-	fdf->dda_scalar =  15.0f;
+	fdf->img_scalar =  30.0f;
 	fdf->z_scalar = 0.5f;
+	fdf->x_centering_offset = 0;
+	fdf->y_centering_offset = 0;
 	fdf->projection_angle = 30.0f;
 	initialize_hooks(fdf);
 	return (fdf);

@@ -50,11 +50,13 @@ typedef struct s_app
 	int		screen_height;
 	int		matrix_width;
 	int		matrix_height;
-	float	dda_scalar;
+	float	img_scalar;
 	float	projection_angle;
 	t_pixel	**world;
 	t_pixel	**screen;
 	float	z_scalar;
+	int		x_centering_offset;
+	int		y_centering_offset;
 }	t_app;
 
 typedef struct s_matrix
@@ -96,5 +98,6 @@ void	exit_error(t_app *fdf, int error);
 void	calculate_projection_x_and_y(t_app *fdf, int x, int y);
 void	draw_pixels_on_window(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
+void	calculate_centering_offset(t_app *fdf);
 
 #endif

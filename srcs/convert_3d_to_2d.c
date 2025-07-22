@@ -24,6 +24,8 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	fdf->screen[y][x].z = (int)round(z);
 	fdf->screen[y][x].x = (int)round(calculate_x_projection(fdf, x, y));
 	fdf->screen[y][x].y = (int)round(calculate_y_projection(fdf, x, y, z));
+	fdf->screen[y][x].x += fdf->x_centering_offset;
+	fdf->screen[y][x].y += fdf->y_centering_offset;
 }
 
 static float	calculate_x_projection(t_app *fdf, int x, int y)
