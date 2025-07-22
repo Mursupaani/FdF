@@ -12,25 +12,22 @@
 
 #include "../incl/fdf.h"
 
-float	*calculate_destination_x_and_y(t_app *fdf, int x, int y)
+float	*calculate_projection_x_and_y(t_app *fdf, int x, int y)
 {
 	float	*coordinates;
-	float	alpha;
 	int		z;
-	int		pos;
+	int		alpha;
 
-	pos = 10;
-	alpha = fdf->projection_angle;
+	alpha = 30;
 	coordinates = (float *)malloc(sizeof(float) * 2);
 	if (!coordinates)
 		exit_error(fdf, MALLOC_ERR);
-	z = fdf->matrix[y][x];
-	coordinates[X] = ((float)x - (float)y) / sqrtf(2);
-	coordinates[Y] = ((float)x + (float)y - 2 * (float)z) / sqrtf(6);
-	coordinates[X] += pos;
-	coordinates[Y] += pos;
-	(void)alpha;
-	// coordinates[X] = x * cosf(deg_to_rad(alpha)) + y * cosf(deg_to_rad(alpha + 120)) + z * cosf(deg_to_rad(alpha - 120)) + 50;
-	// coordinates[Y] = x * sinf(deg_to_rad(alpha)) + y * sinf(deg_to_rad(alpha + 120)) + z * sinf(deg_to_rad(alpha - 120)) + 50;
+	z = fdf->matrix[y][x] * 1;
+	// coordinates[X] = ((float)x - (float)y) / sqrtf(2);
+	// coordinates[Y] = ((float)x + (float)y - 2 * (float)z) / sqrtf(6);
+	coordinates[X] = (x - y) * cosf(deg_to_rad(alpha));
+	coordinates[Y] = (x + y) * sinf(deg_to_rad(alpha)) - z;
+	coordinates[X] += 50;
+	coordinates[Y] += 50;
 	return (coordinates);
 }

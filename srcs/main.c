@@ -18,6 +18,7 @@ static int		destroy_notify_hook(void *param);
 static int		keypress_hook(int keycode, void *param);
 static void		initialize_hooks(t_app *fdf);
 
+//WARN: Delete me
 void	*test_malloc(void)
 {
 	return (NULL);

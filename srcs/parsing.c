@@ -21,6 +21,8 @@ static void	parse_lines(t_app *fdf);
 int	**parse_fdf_file(t_app *fdf)
 {
 	count_matrix_dimensions(fdf);
+	if (fdf->matrix_height == 0 || fdf->matrix_width == 0)
+		exit_error(fdf, PARSING_ERR);
 	initialize_matrix(fdf);
 	parse_lines(fdf);
 	return (fdf->matrix);
@@ -32,12 +34,12 @@ static int	**initialize_matrix(t_app *fdf)
 	int	i;
 
 	i = 0;
-	fdf->matrix = (int **)calloc(1, sizeof(int *) * fdf->matrix_height);
+	fdf->matrix = (int **)ft_calloc(1, sizeof(int *) * fdf->matrix_height);
 	if (!fdf->matrix)
 		exit_error(fdf, MALLOC_ERR);
 	while (i < fdf->matrix_height)
 	{
-		fdf->matrix[i] = (int *)calloc(1, sizeof(int) * fdf->matrix_width);
+		fdf->matrix[i] = (int *)ft_calloc(1, sizeof(int) * fdf->matrix_width);
 		if (!fdf->matrix[i])
 			exit_error(fdf, MALLOC_ERR);
 		i++;

@@ -30,6 +30,13 @@
 # define SCREEN_HEIGHT 1080
 # define deg_to_rad(deg) deg * (M_PI/180)
 
+typedef struct s_projection_pixel
+{
+	int	x;
+	int	y;
+	int	z;
+}	t_pixel;
+
 typedef struct s_app
 {
 	char	*file_path;
@@ -49,6 +56,7 @@ typedef struct s_app
 	float	projection_angle;
 	int		tile_height;
 	int		tile_width;
+	t_pixel	**projection;
 }	t_app;
 
 typedef struct s_matrix
@@ -85,7 +93,7 @@ int		**parse_fdf_file(t_app *fdf);
 void	free_memory(t_app *fdf);
 void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
-float	*calculate_destination_x_and_y(t_app *fdf, int x, int y);
+float	*calculate_projection_x_and_y(t_app *fdf, int x, int y);
 void	dda(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
 
