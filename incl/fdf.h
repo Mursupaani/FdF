@@ -57,7 +57,6 @@ typedef struct s_app
 	float	y_proj_angle;
 	t_pixel	**world;
 	t_pixel	**screen;
-	t_pixel	**screen_base;
 	float	z_scalar;
 	int		x_centering_offset;
 	int		y_centering_offset;

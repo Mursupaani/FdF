@@ -48,8 +48,8 @@ void	calculate_centering_offset(t_app *fdf)
 
 void	draw_pixel(t_app *fdf, int x, int y)
 {
-	fdf->screen[y][x].x = round(fdf->screen_base[y][x].x + fdf->x_centering_offset);
-	fdf->screen[y][x].y = round(fdf->screen_base[y][x].y + fdf->y_centering_offset);
+	fdf->screen[y][x].x = round(fdf->screen[y][x].x + fdf->x_centering_offset);
+	fdf->screen[y][x].y = round(fdf->screen[y][x].y + fdf->y_centering_offset);
 	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, 0x00FFFFFF);
 }
 

@@ -105,11 +105,11 @@ static int	count_matrix_width(t_app *fdf, char *line)
 	}
 	if (fdf->matrix_width == 0)
 		fdf->matrix_width = line_width;
-	if (fdf->matrix_width != line_width)
-	{
-		free(line);
-		exit_error(fdf, PARSING_ERR);
-	}
+	// if (fdf->matrix_width != line_width)
+	// {
+	// 	free(line);
+	// 	exit_error(fdf, PARSING_ERR);
+	// }
 	return (line_width);
 }
 
