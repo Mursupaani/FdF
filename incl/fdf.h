@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/17 14:36:32 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:03:51 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
+# include <limits.h>
+# include <float.h>
 //WARN: Is it okay to use?
 # include <X11/keysym.h>
 # include <X11/X.h>
@@ -26,8 +28,8 @@
 # include "mlx_int.h"
 # include "../libft/libft.h"
 
-# define SCREEN_WIDTH 1920
-# define SCREEN_HEIGHT 1080
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 typedef struct s_projection_pixel
 {
@@ -83,10 +85,19 @@ enum Error_types
 	PARSING_ERR,
 	GET_NEXT_LINE_ERR
 }	;
+
 enum Coordinate
 {
 	X,
 	Y
+}	;
+
+enum Line_end_points
+{
+	X0,
+	Y0,
+	X1,
+	Y1
 }	;
 
 //WARN: Remove
@@ -104,5 +115,9 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y);
 void	draw_pixels_on_window(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
 void	calculate_bounding_box(t_app *fdf);
+void	draw_pixel(t_app *fdf, int x, int y);
+void	draw_lines_between_points(t_app *fdf);
+void	reset_image(t_app *fdf);
+void	update_image(t_app *fdf);
 
 #endif

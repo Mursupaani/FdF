@@ -19,13 +19,17 @@ static float	calculate_y_projection(t_app *fdf, int x, int y, int z);
 void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 {
 	float	z;
+	float	x_proj;
+	float	y_proj;
 	
 	z = fdf->world[y][x].z * fdf->z_scalar;
 	fdf->screen[y][x].z = (z);
-	// fdf->screen[y][x].x += fdf->img_scalar;
-	// fdf->screen[y][x].y += fdf->img_scalar;
-	fdf->screen[y][x].x = (calculate_x_projection(fdf, x, y));
-	fdf->screen[y][x].y = (calculate_y_projection(fdf, x, y, z));
+	x_proj = (calculate_x_projection(fdf, x, y));
+	y_proj = (calculate_y_projection(fdf, x, y, z));
+	x_proj *= fdf->img_scalar;
+	y_proj *= fdf->img_scalar;
+	fdf->screen[y][x].x = x_proj;
+	fdf->screen[y][x].y = y_proj;
 }
 
 void	calculate_bounding_box(t_app *fdf)

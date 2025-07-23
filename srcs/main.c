@@ -11,13 +11,12 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
-#include <float.h>
-#include <limits.h>
 
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
 static int		destroy_notify_hook(void *param);
 static int		keypress_hook(int keycode, void *param);
+static int		mouse_hook(int button, int x, int y, void *param);
 static void		initialize_hooks(t_app *fdf);
 
 //WARN: Delete me
@@ -50,7 +49,7 @@ void	pixel_to_image(t_app *fdf, int x, int y, int color)
 	char	*pixel;
 	int		offset;
 	
-	if (x < SCREEN_WIDTH && x >= 0 && y < SCREEN_HEIGHT && y >= 0)
+	if (x < WIN_WIDTH && x >= 0 && y < WIN_HEIGHT && y >= 0)
 	{
 		offset = (x * (fdf->bits_per_pixel / 8)) + (y * fdf->line_length);
 		pixel = fdf->img_pixels + offset;
@@ -65,6 +64,38 @@ int	keypress_hook(int keycode, void *param)
 	fdf = (t_app *)param;
 	if (keycode == XK_Escape)
 		exit_success(fdf);
+	if (keycode == XK_z)
+	{
+		fdf->z_scalar += 0.1f;
+		update_image(fdf);
+	}
+	if (keycode == XK_x)
+	{
+		fdf->z_scalar -= 0.1f;
+		update_image(fdf);
+	}
+	return (0);
+}
+
+int	mouse_hook(int button, int x, int y, void *param)
+{
+	t_app	*fdf;
+
+	fdf = (t_app *)param;
+	if (button == 4)
+	{
+		fdf->img_scalar += 1.0f;
+		update_image(fdf);
+	}
+	if (button == 5)
+	{
+		if (fdf->img_scalar <= 1.0f)
+			return (0);
+		fdf->img_scalar -= 1.0f;
+		update_image(fdf);
+	}
+	(void)x;
+	(void)y;
 	return (0);
 }
 
@@ -77,6 +108,7 @@ int	destroy_notify_hook(void *param)
 	return (0);
 }
 
+
 static t_app	*initialize_app(char *file_path)
 {
 	t_app	*fdf;
@@ -87,10 +119,10 @@ static t_app	*initialize_app(char *file_path)
 	fdf->mlx = mlx_init();
 	if (!fdf->mlx)
 		exit_error(fdf, MLX_INIT_ERR);
-	fdf->mlx_win = mlx_new_window(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FdF");
+	fdf->mlx_win = mlx_new_window(fdf->mlx, WIN_WIDTH, WIN_HEIGHT, "FdF");
 	if (!fdf->mlx_win)
 		exit_error(fdf, MLX_WIN_ERR);
-	fdf->img = mlx_new_image(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	fdf->img = mlx_new_image(fdf->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!fdf->img)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
@@ -99,11 +131,11 @@ static t_app	*initialize_app(char *file_path)
 	fdf->screen = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
-	fdf->img_scalar =  30.0f;
-	fdf->z_scalar = 1;
+	fdf->img_scalar = 10.0f;
+	fdf->z_scalar = 0.1f;
 	fdf->x_centering_offset = 0;
 	fdf->y_centering_offset = 0;
-	fdf->projection_angle = 30.0f;
+	fdf->projection_angle = 40.0f;
 	fdf->proj_min_x = FLT_MAX;
 	fdf->proj_max_x = FLT_MIN;
 	fdf->proj_min_y = FLT_MAX;
@@ -127,6 +159,7 @@ static bool	is_fdf_file(const char *filename)
 
 static void		initialize_hooks(t_app *fdf)
 {
-	mlx_hook(fdf->mlx_win, KeyPress, KeyPressMask, keypress_hook, fdf);
+	mlx_key_hook(fdf->mlx_win, keypress_hook, fdf);
+	mlx_mouse_hook(fdf->mlx_win, mouse_hook, fdf);
 	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
 }
