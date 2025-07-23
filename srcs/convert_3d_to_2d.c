@@ -23,13 +23,13 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	float	y_proj;
 	
 	z = fdf->world[y][x].z * fdf->z_scalar;
-	fdf->screen[y][x].z = (z);
+	fdf->screen_base[y][x].z = (z);
 	x_proj = (calculate_x_projection(fdf, x, y));
 	y_proj = (calculate_y_projection(fdf, x, y, z));
 	x_proj *= fdf->img_scalar;
 	y_proj *= fdf->img_scalar;
-	fdf->screen[y][x].x = x_proj;
-	fdf->screen[y][x].y = y_proj;
+	fdf->screen_base[y][x].x = x_proj;
+	fdf->screen_base[y][x].y = y_proj;
 }
 
 void	calculate_bounding_box(t_app *fdf)
@@ -37,8 +37,12 @@ void	calculate_bounding_box(t_app *fdf)
 	int	x;
 	int	y;
 
+	if (!fdf->screen_base)
+		fdf->screen_base = initialize_pixel_matrix(fdf);
+	if (!fdf->screen_base)
+		exit_error(fdf, MALLOC_ERR);
 	if (!fdf->screen)
-		fdf->screen = initialize_pixel_matrix(fdf);
+		fdf->screen= initialize_pixel_matrix(fdf);
 	if (!fdf->screen)
 		exit_error(fdf, MALLOC_ERR);
 	y = 0;
@@ -48,14 +52,14 @@ void	calculate_bounding_box(t_app *fdf)
 		while (x < fdf->matrix_width)
 		{
 			calculate_projection_x_and_y(fdf, x, y);
-			if (fdf->screen[y][x].x < fdf->proj_min_x)
-				fdf->proj_min_x = fdf->screen[y][x].x;
-			if (fdf->screen[y][x].x > fdf->proj_max_x)
-				fdf->proj_max_x = fdf->screen[y][x].x;
-			if (fdf->screen[y][x].y < fdf->proj_min_y)
-				fdf->proj_min_y = fdf->screen[y][x].y;
-			if (fdf->screen[y][x].y > fdf->proj_max_y)
-				fdf->proj_max_y = fdf->screen[y][x].y;
+			if (fdf->screen_base[y][x].x < fdf->proj_min_x)
+				fdf->proj_min_x = fdf->screen_base[y][x].x;
+			if (fdf->screen_base[y][x].x > fdf->proj_max_x)
+				fdf->proj_max_x = fdf->screen_base[y][x].x;
+			if (fdf->screen_base[y][x].y < fdf->proj_min_y)
+				fdf->proj_min_y = fdf->screen_base[y][x].y;
+			if (fdf->screen_base[y][x].y > fdf->proj_max_y)
+				fdf->proj_max_y = fdf->screen_base[y][x].y;
 			x++;
 		}
 		y++;
@@ -66,7 +70,7 @@ static float	calculate_x_projection(t_app *fdf, int x, int y)
 {
 	float	x_proj;
 
-	x_proj = (x - y) * cosf(deg_to_rad(fdf->projection_angle));
+	x_proj = (x - y) * cosf(deg_to_rad(fdf->x_proj_angle));
 	return (x_proj);
 }
 
@@ -74,7 +78,7 @@ static float	calculate_y_projection(t_app *fdf, int x, int y, int z)
 {
 	float	y_proj;
 
-	y_proj = (x + y) * sinf(deg_to_rad(fdf->projection_angle)) - z;
+	y_proj = (x + y) * sinf(deg_to_rad(fdf->y_proj_angle)) - z;
 	return (y_proj);
 }
 

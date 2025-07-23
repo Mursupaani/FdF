@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
+#include <float.h>
 
 void	draw_pixels_on_window(t_app *fdf)
 {
@@ -38,16 +39,17 @@ void	calculate_centering_offset(t_app *fdf)
 	float	map_width_proj;
 	float	map_height_proj;
 
-	map_width_proj = fdf->proj_max_x + fdf->proj_min_x;
-	map_height_proj = fdf->proj_max_y + fdf->proj_min_y;
-	fdf->x_centering_offset = WIN_WIDTH / 2.0f - map_width_proj / 2;
-	fdf->y_centering_offset = WIN_HEIGHT / 2.0f - map_height_proj / 2;
+	map_width_proj = fdf->proj_max_x - fdf->proj_min_x;
+	map_height_proj = fdf->proj_max_y - fdf->proj_min_y;
+
+	fdf->x_centering_offset = (WIN_WIDTH / 2.0f) - (fdf->proj_min_x + map_width_proj / 2.0f) + fdf->x_move_view;
+	fdf->y_centering_offset = (WIN_HEIGHT / 2.0f) - (fdf->proj_min_y + map_height_proj / 2.0f) + fdf->y_move_view;
 }
 
 void	draw_pixel(t_app *fdf, int x, int y)
 {
-	fdf->screen[y][x].x = round(fdf->screen[y][x].x + fdf->x_centering_offset);
-	fdf->screen[y][x].y = round(fdf->screen[y][x].y + fdf->y_centering_offset);
+	fdf->screen[y][x].x = round(fdf->screen_base[y][x].x + fdf->x_centering_offset);
+	fdf->screen[y][x].y = round(fdf->screen_base[y][x].y + fdf->y_centering_offset);
 	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, 0x00FFFFFF);
 }
 
@@ -63,7 +65,17 @@ void	reset_image(t_app *fdf)
 
 void	update_image(t_app *fdf)
 {
-		reset_image(fdf);
-		draw_pixels_on_window(fdf);
-		mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
+	reset_image(fdf);
+	draw_pixels_on_window(fdf);
+	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
+	fdf->proj_min_x = FLT_MAX;
+	fdf->proj_max_x = FLT_MIN;
+	fdf->proj_min_y = FLT_MAX;
+	fdf->proj_max_y = FLT_MIN;
+}
+
+void	reset_view(t_app *fdf)
+{
+	reset_view_settings(fdf);
+	update_image(fdf);
 }

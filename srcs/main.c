@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
+#include <X11/Xutil.h>
 
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
@@ -64,14 +65,56 @@ int	keypress_hook(int keycode, void *param)
 	fdf = (t_app *)param;
 	if (keycode == XK_Escape)
 		exit_success(fdf);
-	if (keycode == XK_z)
+	if (keycode == XK_w)
 	{
 		fdf->z_scalar += 0.1f;
 		update_image(fdf);
 	}
-	if (keycode == XK_x)
+	if (keycode == XK_q)
 	{
 		fdf->z_scalar -= 0.1f;
+		update_image(fdf);
+	}
+	if (keycode == XK_r)
+		reset_view(fdf);
+	if (keycode == XK_Up)
+	{
+		fdf->y_move_view -= 20;
+		update_image(fdf);
+	}
+	if (keycode == XK_Down)
+	{
+		fdf->y_move_view += 20;
+		update_image(fdf);
+	}
+	if (keycode == XK_Left)
+	{
+		fdf->x_move_view -= 20;
+		update_image(fdf);
+	}
+	if (keycode == XK_Right)
+	{
+		fdf->x_move_view += 20;
+		update_image(fdf);
+	}
+	if (keycode == XK_z)
+	{
+		fdf->x_proj_angle -= 5;
+		update_image(fdf);
+	}
+	if (keycode == XK_x)
+	{
+		fdf->x_proj_angle += 5;
+		update_image(fdf);
+	}
+	if (keycode == XK_c)
+	{
+		fdf->y_proj_angle -= 5;
+		update_image(fdf);
+	}
+	if (keycode == XK_v)
+	{
+		fdf->y_proj_angle += 5;
 		update_image(fdf);
 	}
 	return (0);
@@ -131,17 +174,26 @@ static t_app	*initialize_app(char *file_path)
 	fdf->screen = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
+	reset_view_settings(fdf);
+	initialize_hooks(fdf);
+	return (fdf);
+}
+
+void	reset_view_settings(t_app *fdf)
+{
 	fdf->img_scalar = 10.0f;
 	fdf->z_scalar = 0.1f;
 	fdf->x_centering_offset = 0;
 	fdf->y_centering_offset = 0;
-	fdf->projection_angle = 40.0f;
+	fdf->x_move_view = 0;
+	fdf->y_move_view = 0;
+	fdf->x_proj_angle = 40.0f;
+	fdf->y_proj_angle = 40.0f;
 	fdf->proj_min_x = FLT_MAX;
 	fdf->proj_max_x = FLT_MIN;
 	fdf->proj_min_y = FLT_MAX;
 	fdf->proj_max_y = FLT_MIN;
-	initialize_hooks(fdf);
-	return (fdf);
+
 }
 
 static bool	is_fdf_file(const char *filename)

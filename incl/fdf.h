@@ -53,12 +53,16 @@ typedef struct s_app
 	int		matrix_width;
 	int		matrix_height;
 	float	img_scalar;
-	float	projection_angle;
+	float	x_proj_angle;
+	float	y_proj_angle;
 	t_pixel	**world;
 	t_pixel	**screen;
+	t_pixel	**screen_base;
 	float	z_scalar;
 	int		x_centering_offset;
 	int		y_centering_offset;
+	int		x_move_view;
+	int		y_move_view;
 	float	proj_min_x;
 	float	proj_max_x;
 	float	proj_min_y;
@@ -119,5 +123,7 @@ void	draw_pixel(t_app *fdf, int x, int y);
 void	draw_lines_between_points(t_app *fdf);
 void	reset_image(t_app *fdf);
 void	update_image(t_app *fdf);
+void	reset_view(t_app *fdf);
+void	reset_view_settings(t_app *fdf);
 
 #endif
