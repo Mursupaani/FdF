@@ -22,8 +22,8 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	
 	z = fdf->world[y][x].z * fdf->z_scalar;
 	fdf->screen[y][x].z = (z);
-	fdf->screen[y][x].x += fdf->img_scalar;
-	fdf->screen[y][x].y += fdf->img_scalar;
+	// fdf->screen[y][x].x += fdf->img_scalar;
+	// fdf->screen[y][x].y += fdf->img_scalar;
 	fdf->screen[y][x].x = (calculate_x_projection(fdf, x, y));
 	fdf->screen[y][x].y = (calculate_y_projection(fdf, x, y, z));
 }

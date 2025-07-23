@@ -38,15 +38,8 @@ int	main(int argc, char *argv[])
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
 	start_fdf(fdf);
-	calculate_bounding_box(fdf);
-	ft_printf("xmin: %d\n", (int)fdf->proj_min_x);
-	ft_printf("xmax: %d\n", (int)fdf->proj_max_x);
-	ft_printf("ymin: %d\n", (int)fdf->proj_min_y);
-	ft_printf("ymax: %d\n", (int)fdf->proj_max_y);
 	draw_pixels_on_window(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
-	print_matrix(fdf, fdf->world);
-	print_matrix(fdf, fdf->screen);
 	mlx_loop(fdf->mlx);
 	exit_success(fdf);
 	return (0);
