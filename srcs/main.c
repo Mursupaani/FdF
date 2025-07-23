@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
-#include <X11/Xutil.h>
+#include <limits.h>
 
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
@@ -97,16 +97,6 @@ int	keypress_hook(int keycode, void *param)
 		fdf->x_move_view += 20;
 		update_image(fdf);
 	}
-	if (keycode == XK_z)
-	{
-		fdf->x_proj_angle -= 5;
-		update_image(fdf);
-	}
-	if (keycode == XK_x)
-	{
-		fdf->x_proj_angle += 5;
-		update_image(fdf);
-	}
 	if (keycode == XK_c)
 	{
 		fdf->y_proj_angle -= 5;
@@ -115,6 +105,16 @@ int	keypress_hook(int keycode, void *param)
 	if (keycode == XK_v)
 	{
 		fdf->y_proj_angle += 5;
+		update_image(fdf);
+	}
+	if (keycode == XK_z)
+	{
+		change_color(fdf, '+');
+		update_image(fdf);
+	}
+	if (keycode == XK_x)
+	{
+		change_color(fdf, '-');
 		update_image(fdf);
 	}
 	return (0);
@@ -174,6 +174,7 @@ static t_app	*initialize_app(char *file_path)
 	fdf->screen = NULL;
 	fdf->matrix_height = 0;
 	fdf->matrix_width = 0;
+	fdf->default_color = 0xFFFFFF;
 	reset_view_settings(fdf);
 	initialize_hooks(fdf);
 	return (fdf);
@@ -193,7 +194,7 @@ void	reset_view_settings(t_app *fdf)
 	fdf->proj_max_x = FLT_MIN;
 	fdf->proj_min_y = FLT_MAX;
 	fdf->proj_max_y = FLT_MIN;
-
+	fdf->default_color = 0xFFFFFF;
 }
 
 static bool	is_fdf_file(const char *filename)

@@ -36,6 +36,7 @@ typedef struct s_projection_pixel
 	float	x;
 	float	y;
 	float	z;
+	int		color;
 }	t_pixel;
 
 typedef struct s_app
@@ -66,6 +67,7 @@ typedef struct s_app
 	float	proj_max_x;
 	float	proj_min_y;
 	float	proj_max_y;
+	int		default_color;
 }	t_app;
 
 typedef struct s_matrix
@@ -124,5 +126,6 @@ void	reset_image(t_app *fdf);
 void	update_image(t_app *fdf);
 void	reset_view(t_app *fdf);
 void	reset_view_settings(t_app *fdf);
+void	change_color(t_app *fdf, char operation);
 
 #endif

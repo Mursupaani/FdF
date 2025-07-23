@@ -78,7 +78,7 @@ static void	draw_line_between_two_points(t_app *fdf, int line_end_points[])
 
 	while (true)
 	{
-		pixel_to_image(fdf, x0, y0, 0x00FFFFFF);
+		pixel_to_image(fdf, x0, y0, fdf->default_color);
 		if (x0 == x1
 			&& y0 == y1)
 			break ;

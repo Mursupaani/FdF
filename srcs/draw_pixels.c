@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
-#include <float.h>
 
 void	draw_pixels_on_window(t_app *fdf)
 {
@@ -50,7 +49,7 @@ void	draw_pixel(t_app *fdf, int x, int y)
 {
 	fdf->screen[y][x].x = round(fdf->screen[y][x].x + fdf->x_centering_offset);
 	fdf->screen[y][x].y = round(fdf->screen[y][x].y + fdf->y_centering_offset);
-	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, 0x00FFFFFF);
+	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, fdf->default_color);
 }
 
 void	reset_image(t_app *fdf)
@@ -78,4 +77,28 @@ void	reset_view(t_app *fdf)
 {
 	reset_view_settings(fdf);
 	update_image(fdf);
+}
+
+void	change_color(t_app *fdf, char operation)
+{
+	static int	i;
+	int			colors[8];
+
+	colors[0] = 0xFFFFFF;
+	colors[1] = 0x065535;
+	colors[2] = 0xffc0cb;
+	colors[3] = 0x008080;
+	colors[4] = 0xe6e6fa;
+	colors[5] = 0xffa500;
+	colors[6] = 0xd3ffce;
+	colors[7] = 0x003366;
+	if (operation == '+')
+		i++;
+	if (operation == '-')
+		i--;
+	if (i < 0)
+		i = 7;
+	if (i > 7)
+		i = 0;
+	fdf->default_color = colors[i];
 }
