@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:27:45 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/23 14:07:28 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:18:08 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,33 +33,11 @@ void	draw_pixels_on_window(t_app *fdf)
 	draw_lines_between_points(fdf);
 }
 
-void	calculate_centering_offset(t_app *fdf)
-{
-	float	map_width_proj;
-	float	map_height_proj;
-
-	map_width_proj = fdf->proj_max_x - fdf->proj_min_x;
-	map_height_proj = fdf->proj_max_y - fdf->proj_min_y;
-
-	fdf->x_centering_offset = (WIN_WIDTH / 2.0f) - (fdf->proj_min_x + map_width_proj / 2.0f) + fdf->x_move_view;
-	fdf->y_centering_offset = (WIN_HEIGHT / 2.0f) - (fdf->proj_min_y + map_height_proj / 2.0f) + fdf->y_move_view;
-}
-
 void	draw_pixel(t_app *fdf, int x, int y)
 {
 	fdf->screen[y][x].x = round(fdf->screen[y][x].x + fdf->x_centering_offset);
 	fdf->screen[y][x].y = round(fdf->screen[y][x].y + fdf->y_centering_offset);
 	pixel_to_image(fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, fdf->default_color);
-}
-
-void	reset_image(t_app *fdf)
-{
-	mlx_destroy_image(fdf->mlx, fdf->img);
-	fdf->img = mlx_new_image(fdf->mlx, WIN_WIDTH, WIN_HEIGHT);
-	if (!fdf->img)
-		exit_error(fdf, MLX_IMG_ERR);
-	fdf->img_pixels = mlx_get_data_addr(
-		fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
 }
 
 void	update_image(t_app *fdf)
@@ -71,12 +49,6 @@ void	update_image(t_app *fdf)
 	fdf->proj_max_x = FLT_MIN;
 	fdf->proj_min_y = FLT_MAX;
 	fdf->proj_max_y = FLT_MIN;
-}
-
-void	reset_view(t_app *fdf)
-{
-	reset_view_settings(fdf);
-	update_image(fdf);
 }
 
 void	change_color(t_app *fdf, char operation)

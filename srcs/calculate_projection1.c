@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert_3d_to_2d.c                                 :+:      :+:    :+:   */
+/*   calculate_projection1.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:32:23 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/17 14:08:40 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:21:33 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
 
-static float	deg_to_rad(float deg);
 static float	calculate_x_projection(t_app *fdf, int x, int y);
 static float	calculate_y_projection(t_app *fdf, int x, int y, int z);
 
@@ -21,7 +20,7 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	float	z;
 	float	x_proj;
 	float	y_proj;
-	
+
 	z = fdf->world[y][x].z * fdf->z_scalar;
 	fdf->screen[y][x].z = (z);
 	x_proj = (calculate_x_projection(fdf, x, y));
@@ -42,7 +41,7 @@ void	calculate_bounding_box(t_app *fdf)
 	if (!fdf->screen)
 		exit_error(fdf, MALLOC_ERR);
 	if (!fdf->screen)
-		fdf->screen= initialize_pixel_matrix(fdf);
+		fdf->screen = initialize_pixel_matrix(fdf);
 	if (!fdf->screen)
 		exit_error(fdf, MALLOC_ERR);
 	y = 0;
@@ -82,7 +81,13 @@ static float	calculate_y_projection(t_app *fdf, int x, int y, int z)
 	return (y_proj);
 }
 
-static float	deg_to_rad(float deg)
+void	calculate_centering_offset(t_app *fdf)
 {
-	return (deg * (M_PI/180));
+	float	map_width_proj;
+	float	map_height_proj;
+
+	map_width_proj = fdf->proj_max_x - fdf->proj_min_x;
+	map_height_proj = fdf->proj_max_y - fdf->proj_min_y;
+	fdf->x_centering_offset = (WIN_WIDTH / 2.0f) - (fdf->proj_min_x + map_width_proj / 2.0f) + fdf->x_move_view;
+	fdf->y_centering_offset = (WIN_HEIGHT / 2.0f) - (fdf->proj_min_y + map_height_proj / 2.0f) + fdf->y_move_view;
 }
