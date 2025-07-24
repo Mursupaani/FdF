@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 11:33:29 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:47:06 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_app
 	float	proj_min_y;
 	float	proj_max_y;
 	int		default_color;
+	int		line_ends[4];
 }	t_app;
 
 typedef struct s_matrix
@@ -76,6 +77,20 @@ typedef struct s_matrix
 	int	matrix_width;
 	int	matrix_height;
 }	t_matrix;
+
+typedef struct s_line_calculation
+{
+	int	x0;
+	int	y0;
+	int	x1;
+	int	y1;
+	int	dx;
+	int	sx;
+	int	dy;
+	int	sy;
+	int	err;
+	int	e2;
+}	t_line_calc;
 
 enum e_error_types
 {
@@ -136,6 +151,6 @@ void	zoom_view(t_app *fdf, int keycode);
 void	rotate_up_down(t_app *fdf, int keycode);
 void	change_z_depth(t_app *fdf, int keycode);
 void	count_matrix_width(t_app *fdf, char *line);
-int	count_matrix_dimensions(t_app *fdf);
+int		count_matrix_dimensions(t_app *fdf);
 
 #endif

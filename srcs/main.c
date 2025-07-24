@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:49:40 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 10:17:56 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:05:40 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
 static void		initialize_hooks(t_app *fdf);
-
-//WARN: Delete me
-void	*test_malloc(void)
-{
-	return (NULL);
-}
 
 int	main(int argc, char *argv[])
 {
@@ -70,7 +64,8 @@ static t_app	*initialize_app(char *file_path)
 	fdf->img = mlx_new_image(fdf->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!fdf->img)
 		exit_error(fdf, MLX_IMG_ERR);
-	fdf->img_pixels = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
+	fdf->img_pixels = mlx_get_data_addr(
+			fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
 	fdf->file_path = file_path;
 	fdf->world = NULL;
 	fdf->screen = NULL;
@@ -80,23 +75,6 @@ static t_app	*initialize_app(char *file_path)
 	reset_view_settings(fdf);
 	initialize_hooks(fdf);
 	return (fdf);
-}
-
-void	reset_view_settings(t_app *fdf)
-{
-	fdf->img_scalar = 10.0f;
-	fdf->z_scalar = 0.1f;
-	fdf->x_centering_offset = 0;
-	fdf->y_centering_offset = 0;
-	fdf->x_move_view = 0;
-	fdf->y_move_view = 0;
-	fdf->x_proj_angle = 40.0f;
-	fdf->y_proj_angle = 40.0f;
-	fdf->proj_min_x = FLT_MAX;
-	fdf->proj_max_x = FLT_MIN;
-	fdf->proj_min_y = FLT_MAX;
-	fdf->proj_max_y = FLT_MIN;
-	fdf->default_color = 0xFFFFFF;
 }
 
 static bool	is_fdf_file(const char *filename)

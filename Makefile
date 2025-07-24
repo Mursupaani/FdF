@@ -10,8 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-#WARN: Remove print matrix
-
 NAME		= fdf
 LIBFT		= ./libft/libft.a
 MLX			= ./mlx/libmlx_Linux.a
@@ -22,7 +20,6 @@ SRCS 		= ./srcs/main.c \
 			  ./srcs/fdf.c \
 			  ./srcs/parsing.c \
 			  ./srcs/parsing_utils.c \
-			  ./srcs/print_matrix.c \
 			  ./srcs/draw_pixels.c \
 			  ./srcs/calculate_projection.c \
 			  ./srcs/line_drawing.c \
@@ -34,7 +31,6 @@ OBJS 		= $(SRCS:%.c=%.o)
 HEADER		= ./incl/fdf.h
 C_FLAGS		= -Wall -Wextra -Werror -g
 MLXFLAGS	= -lXext -lX11 -lm
-#MLXFLAGS	= -lmlx -lXext -lX11
 
 all: $(NAME)
 
