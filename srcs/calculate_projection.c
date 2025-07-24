@@ -36,14 +36,6 @@ void	calculate_bounding_box(t_app *fdf)
 	int	x;
 	int	y;
 
-	if (!fdf->screen)
-		fdf->screen = initialize_pixel_matrix(fdf);
-	if (!fdf->screen)
-		exit_error(fdf, MALLOC_ERR);
-	if (!fdf->screen)
-		fdf->screen = initialize_pixel_matrix(fdf);
-	if (!fdf->screen)
-		exit_error(fdf, MALLOC_ERR);
 	y = 0;
 	while (y < fdf->matrix_height)
 	{

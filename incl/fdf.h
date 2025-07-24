@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 10:17:42 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:33:29 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	calculate_centering_offset(t_app *fdf);
 void	start_fdf(t_app *fdf);
 t_pixel	**parse_fdf_file(t_app *fdf);
 t_pixel	**initialize_pixel_matrix(t_app *fdf);
-void	save_pixel_coordinates_to_matrix(t_pixel **space, int x, int y, int z);
+void	save_pixel_coordinates(t_pixel **space, int x, int y, int z);
 void	free_memory(t_app *fdf);
 void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
@@ -126,10 +126,16 @@ void	reset_image(t_app *fdf);
 void	update_image(t_app *fdf);
 void	reset_view(t_app *fdf);
 void	reset_view_settings(t_app *fdf);
-void	change_color(t_app *fdf, char operation);
+void	change_color(t_app *fdf, int keycode);
 int		mouse_hook(int button, int x, int y, void *param);
 int		keypress_hook(int keycode, void *param);
 float	deg_to_rad(float deg);
 int		destroy_notify_hook(void *param);
+void	move_view(t_app *fdf, int keycode);
+void	zoom_view(t_app *fdf, int keycode);
+void	rotate_up_down(t_app *fdf, int keycode);
+void	change_z_depth(t_app *fdf, int keycode);
+void	count_matrix_width(t_app *fdf, char *line);
+int	count_matrix_dimensions(t_app *fdf);
 
 #endif

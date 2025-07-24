@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks1.c                                           :+:      :+:    :+:   */
+/*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 09:59:10 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 10:31:37 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:08:01 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,57 +50,16 @@ int	keypress_hook(int keycode, void *param)
 	fdf = (t_app *)param;
 	if (keycode == XK_Escape)
 		exit_success(fdf);
-	if (keycode == XK_w)
-	{
-		fdf->z_scalar += 0.1f;
-		update_image(fdf);
-	}
-	if (keycode == XK_q)
-	{
-		fdf->z_scalar -= 0.1f;
-		update_image(fdf);
-	}
 	if (keycode == XK_r)
 		reset_view(fdf);
-	if (keycode == XK_Up)
-	{
-		fdf->y_move_view -= 20;
-		update_image(fdf);
-	}
-	if (keycode == XK_Down)
-	{
-		fdf->y_move_view += 20;
-		update_image(fdf);
-	}
-	if (keycode == XK_Left)
-	{
-		fdf->x_move_view -= 20;
-		update_image(fdf);
-	}
-	if (keycode == XK_Right)
-	{
-		fdf->x_move_view += 20;
-		update_image(fdf);
-	}
-	if (keycode == XK_c)
-	{
-		fdf->y_proj_angle -= 5;
-		update_image(fdf);
-	}
-	if (keycode == XK_v)
-	{
-		fdf->y_proj_angle += 5;
-		update_image(fdf);
-	}
-	if (keycode == XK_z)
-	{
-		change_color(fdf, '+');
-		update_image(fdf);
-	}
-	if (keycode == XK_x)
-	{
-		change_color(fdf, '-');
-		update_image(fdf);
-	}
+	if (keycode == XK_w || keycode == XK_q)
+		change_z_depth(fdf, keycode);
+	if (keycode == XK_Up || keycode == XK_Down
+		|| keycode == XK_Left || keycode == XK_Right)
+		move_view(fdf, keycode);
+	if (keycode == XK_c || keycode == XK_v)
+		rotate_up_down(fdf, keycode);
+	if (keycode == XK_z || keycode == XK_x)
+		change_color(fdf, keycode);
 	return (0);
 }

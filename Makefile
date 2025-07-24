@@ -6,7 +6,7 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/07/24 10:16:48 by anpollan         ###   ########.fr        #
+#    Updated: 2025/07/24 11:34:09 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,13 @@ SRCS 		= ./srcs/main.c \
 			  ./srcs/memory_and_error.c \
 			  ./srcs/fdf.c \
 			  ./srcs/parsing.c \
+			  ./srcs/parsing_utils.c \
 			  ./srcs/print_matrix.c \
 			  ./srcs/draw_pixels.c \
-			  ./srcs/calculate_projection1.c \
-			  ./srcs/calculate_projection2.c \
+			  ./srcs/calculate_projection.c \
 			  ./srcs/line_drawing.c \
-			  ./srcs/hooks1.c \
-			  ./srcs/hooks2.c \
+			  ./srcs/hooks.c \
+			  ./srcs/manipulate_view.c \
 			  ./srcs/resetting.c \
 			  ./srcs/fdf_utils.c
 OBJS 		= $(SRCS:%.c=%.o)
