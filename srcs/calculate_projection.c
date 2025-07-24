@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   calculate_projection1.c                            :+:      :+:    :+:   */
+/*   calculate_projection.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:32:23 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 10:21:33 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:03:24 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,15 @@ void	calculate_centering_offset(t_app *fdf)
 {
 	float	map_width_proj;
 	float	map_height_proj;
+	float	win_x_mid;
+	float	win_y_mid;
 
 	map_width_proj = fdf->proj_max_x - fdf->proj_min_x;
 	map_height_proj = fdf->proj_max_y - fdf->proj_min_y;
-	fdf->x_centering_offset = (WIN_WIDTH / 2.0f) - (fdf->proj_min_x + map_width_proj / 2.0f) + fdf->x_move_view;
-	fdf->y_centering_offset = (WIN_HEIGHT / 2.0f) - (fdf->proj_min_y + map_height_proj / 2.0f) + fdf->y_move_view;
+	map_width_proj = fdf->proj_min_x + map_width_proj / 2.0f;
+	map_height_proj = fdf->proj_min_y + map_height_proj / 2.0f;
+	win_x_mid = WIN_WIDTH / 2.0f;
+	win_y_mid = WIN_HEIGHT / 2.0f;
+	fdf->x_centering_offset = win_x_mid - map_width_proj + fdf->x_move_view;
+	fdf->y_centering_offset = win_y_mid - map_height_proj + fdf->y_move_view;
 }
