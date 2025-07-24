@@ -35,10 +35,16 @@ void	draw_pixels_on_window(t_app *fdf)
 
 void	draw_pixel(t_app *fdf, int x, int y)
 {
+	int	color;
+
+	if (fdf->screen[y][x].color == -1)
+		color = fdf->default_color;
+	else
+		color = fdf->screen[y][x].color;
 	fdf->screen[y][x].x = round(fdf->screen[y][x].x + fdf->x_centering_offset);
 	fdf->screen[y][x].y = round(fdf->screen[y][x].y + fdf->y_centering_offset);
 	pixel_to_image(
-		fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, fdf->default_color);
+		fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, color);
 }
 
 void	change_z_depth(t_app *fdf, int keycode)

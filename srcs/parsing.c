@@ -84,6 +84,8 @@ static void	parse_split_line(t_app *fdf, char *split_line[], int x, int y)
 			fdf->world[y][x].color = *temp_val;
 			free(temp[1]);
 		}
+		else
+			fdf->world[y][x].color = -1;
 		free(temp);
 		free(split_line[x]);
 		x++;
