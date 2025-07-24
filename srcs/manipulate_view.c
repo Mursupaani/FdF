@@ -67,8 +67,8 @@ void	reset_view_settings(t_app *fdf)
 	fdf->y_centering_offset = 0;
 	fdf->x_move_view = 0;
 	fdf->y_move_view = 0;
-	fdf->x_proj_angle = 40.0f;
-	fdf->y_proj_angle = 40.0f;
+	fdf->x_proj_angle = 30.0f;
+	fdf->y_proj_angle = 30.0f;
 	fdf->proj_min_x = FLT_MAX;
 	fdf->proj_max_x = FLT_MIN;
 	fdf->proj_min_y = FLT_MAX;

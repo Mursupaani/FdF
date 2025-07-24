@@ -22,14 +22,15 @@ SRCS		= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			  ft_print_integer.c ft_print_lowercase_hex.c ft_print_num_in_hex.c \
 			  ft_print_percentage.c ft_print_pointer.c ft_print_string.c \
 			  ft_print_unsigned_decimal.c ft_print_uppercase_hex.c \
-			  get_next_line_bonus.c get_next_line_utils_bonus.c
+			  get_next_line_bonus.c get_next_line_utils_bonus.c \
+			  ft_atoi_hexadecimal.c ft_atoi_safe.c
 OBJS		= $(SRCS:%.c=%.o)
 BONUS		= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 			  ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 			  ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 BONUS_OBJS	= $(BONUS:%.c=%.o)
 CC			= cc
-C_FLAGS		= -Wall -Wextra -Werror -c -I.
+C_FLAGS		= -Wall -Wextra -Werror -c -g -I.
 AR			= ar
 AR_FLAGS	= -rcs
 

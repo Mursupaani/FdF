@@ -62,9 +62,29 @@ static void	parse_lines(t_app *fdf)
 
 static void	parse_split_line(t_app *fdf, char *split_line[], int x, int y)
 {
+	char	**temp;
+	int		*temp_val;
+	int		val;
 	while (x < fdf->matrix_width)
 	{
-		save_pixel_coordinates(fdf->world, x, y, ft_atoi(split_line[x]));
+		temp = ft_split(split_line[x], ',');
+		if (!temp || !temp[0])
+			exit_error(fdf, PARSING_ERR);
+		temp_val = ft_atoi_safe(temp[0]);
+		if (!temp)
+			exit_error(fdf, PARSING_ERR);
+		val = *temp_val;
+		save_pixel_coordinates(fdf->world, x, y, val);
+		free(temp[0]);
+		if (temp[1])
+		{
+			temp_val = ft_atoi_hexadecimal_safe(temp[1]);
+			if (!temp_val)
+				exit_error(fdf, PARSING_ERR);
+			fdf->world[y][x].color = *temp_val;
+			free(temp[1]);
+		}
+		free(temp);
 		free(split_line[x]);
 		x++;
 	}

@@ -29,6 +29,7 @@ void	calculate_projection_x_and_y(t_app *fdf, int x, int y)
 	y_proj *= fdf->img_scalar;
 	fdf->screen[y][x].x = x_proj;
 	fdf->screen[y][x].y = y_proj;
+	fdf->screen[y][x].color = fdf->world[y][x].color;
 }
 
 void	calculate_bounding_box(t_app *fdf)
