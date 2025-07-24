@@ -2,5 +2,4 @@ fdf
 *.o
 *.json
 *.sh
-libft/
 .cache/
