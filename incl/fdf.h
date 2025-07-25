@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/25 13:14:52 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/25 13:56:20 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include "mlx_int.h"
 # include "../libft/libft.h"
 
-# define WIN_WIDTH 2000
-# define WIN_HEIGHT 2000
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 typedef struct s_projection_pixel
 {
@@ -78,19 +78,25 @@ typedef struct s_matrix
 
 typedef struct s_line_calculation
 {
-	int	x0;
-	int	y0;
-	int	x1;
-	int	y1;
-	int	dx;
-	int	sx;
-	int	dy;
-	int	sy;
-	int	err;
-	int	e2;
-	int	start_color;
-	int	end_color;
-	int	color_change;
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
+	int				dx;
+	int				sx;
+	int				dy;
+	int				sy;
+	int				err;
+	int				e2;
+	unsigned int	start_color;
+	unsigned char	start_r;
+	unsigned char	start_g;
+	unsigned char	start_b;
+	unsigned char	end_r;
+	unsigned char	end_g;
+	unsigned char	end_b;
+	unsigned int	end_color;
+	unsigned int	color_change;
 }	t_line_calc;
 
 enum e_error_types

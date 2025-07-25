@@ -52,9 +52,7 @@ static void	parse_lines(t_app *fdf)
 			exit_error(fdf, GET_NEXT_LINE_ERR);
 		split_line = ft_split(line, ' ');
 		free(line);
-		if (!split_line)
-			exit_error(fdf, MALLOC_ERR);
-		if (!parse_split_line(fdf, split_line, x, y))
+		if (!split_line || !parse_split_line(fdf, split_line, x, y))
 			exit_error(fdf, PARSING_ERR);
 		free(split_line);
 		y++;
@@ -107,7 +105,7 @@ static bool	parse_pos_and_color(t_app *fdf, char *temp[], int x, int y)
 			free_string_array(&temp, 0);
 			return (false);
 		}
-		fdf->world[y][x].color = *temp_val;
+		fdf->world[y][x].color = (unsigned int)*temp_val;
 	}
 	else
 		fdf->world[y][x].color = -1;

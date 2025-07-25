@@ -47,7 +47,7 @@ void	draw_lines_between_points(t_app *fdf)
 
 static void	draw_line_between_two_points(t_app *fdf, t_line_calc *line)
 {
-	int	color;
+	unsigned int	color;
 
 	init_line_calc_struct(line);
 	calculate_color_change(line);

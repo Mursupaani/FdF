@@ -13,7 +13,7 @@
 #include "libft.h"
 
 static char	*nptr_to_lower(const char *nptr, char *nbr_str, int nptrlen);
-static int	convert_hexadecimal_to_nbr(char *nbr_str, long *nbr, int nptrlen);
+static int	convert_hexadecimal_to_nbr(char *nbr_str, long *nbr);
 static int	convert_single_hex_to_int(char hex);
 
 int	*ft_atoi_hexadecimal_safe(const char *nptr)
@@ -24,6 +24,7 @@ int	*ft_atoi_hexadecimal_safe(const char *nptr)
 
 	if (ft_strncmp(nptr, "0x", 2))
 		return (NULL);
+	*nbr = 0;
 	nptr += 2;
 	nptrlen = ft_strlen(nptr);
 	if (nptrlen == 0)
@@ -32,7 +33,7 @@ int	*ft_atoi_hexadecimal_safe(const char *nptr)
 	if (!nbr_str)
 		return (NULL);
 	nbr_str = nptr_to_lower(nptr, nbr_str, nptrlen);
-	if (!convert_hexadecimal_to_nbr(nbr_str, nbr, nptrlen))
+	if (!convert_hexadecimal_to_nbr(nbr_str, nbr))
 	{
 		free(nbr_str);
 		return (NULL);
@@ -49,10 +50,15 @@ static char	*nptr_to_lower(const char *nptr, char *nbr_str, int nptrlen)
 	while (i <= nptrlen)
 	{
 		nbr_str[i] = nptr[i];
+		if (nptr[i] == '\n')
+		{
+			nbr_str[i] = '\0';
+			break ;
+		}
 		i++;
 	}
 	i = 0;
-	while (i < nptrlen)
+	while (nbr_str[i])
 	{
 		nbr_str[i] = ft_tolower(nbr_str[i]);
 		i++;
@@ -60,13 +66,13 @@ static char	*nptr_to_lower(const char *nptr, char *nbr_str, int nptrlen)
 	return (nbr_str);
 }
 
-static int	convert_hexadecimal_to_nbr(char *nbr_str, long *nbr, int nptrlen)
+static int	convert_hexadecimal_to_nbr(char *nbr_str, long *nbr)
 {
 	int			i;
 	int			hex;
 
 	i = 0;
-	while (i < nptrlen)
+	while (nbr_str[i])
 	{
 		*nbr *= 16;
 		hex = convert_single_hex_to_int(nbr_str[i]);
