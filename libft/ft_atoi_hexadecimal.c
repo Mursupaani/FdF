@@ -33,7 +33,11 @@ int	*ft_atoi_hexadecimal_safe(const char *nptr)
 		return (NULL);
 	nbr_str = nptr_to_lower(nptr, nbr_str, nptrlen);
 	if (!convert_hexadecimal_to_nbr(nbr_str, nbr, nptrlen))
+	{
+		free(nbr_str);
 		return (NULL);
+	}
+	free(nbr_str);
 	return ((int *)nbr);
 }
 
