@@ -14,11 +14,11 @@
 
 int	*ft_atoi_safe(const char *nptr)
 {
-	static long int	result[1];
+	static long int	res[1];
 	int				sign;
 
 	sign = 1;
-	*result = 0;
+	*res = 0;
 	while (*nptr == ' ' || (*nptr >= 9 && *nptr <= 13))
 		nptr++;
 	if (*nptr == '+' || *nptr == '-')
@@ -31,12 +31,12 @@ int	*ft_atoi_safe(const char *nptr)
 	}
 	while (*nptr >= '0' && *nptr <= '9')
 	{
-		*result *= 10;
-		*result += *nptr - '0';
+		*res *= 10;
+		*res += *nptr - '0';
 		nptr++;
 	}
-	*result *= sign;
-	if (*result > INT_MAX || *result < INT_MIN || *nptr != '\0')
-		return (NULL);
-	return ((int *)result);
+	*res *= sign;
+	if (*res <= INT_MAX && *res >= INT_MIN && (*nptr == '\0' || *nptr == '\n'))
+		return ((int *)res);
+	return (NULL);
 }
