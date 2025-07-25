@@ -15,8 +15,8 @@
 static void	parse_lines(t_app *fdf);
 static bool	parse_split_line(t_app *fdf, char *split_line[], int x, int y);
 static bool	parse_pos_and_color(t_app *fdf, char *temp[], int x, int y);
+static void	free_string_array(char **arr[], int i);
 
-//WARN: Make void?
 t_pixel	**parse_fdf_file(t_app *fdf)
 {
 	count_matrix_dimensions(fdf);
@@ -54,7 +54,8 @@ static void	parse_lines(t_app *fdf)
 		free(line);
 		if (!split_line)
 			exit_error(fdf, MALLOC_ERR);
-		parse_split_line(fdf, split_line, x, y);
+		if (!parse_split_line(fdf, split_line, x, y))
+			exit_error(fdf, PARSING_ERR);
 		free(split_line);
 		y++;
 	}
@@ -64,12 +65,20 @@ static void	parse_lines(t_app *fdf)
 static bool	parse_split_line(t_app *fdf, char *split_line[], int x, int y)
 {
 	char	**temp;
+
 	while (x < fdf->matrix_width)
 	{
 		temp = ft_split(split_line[x], ',');
 		if (!temp || !temp[0])
+		{
+			free_string_array(&split_line, x);
 			exit_error(fdf, PARSING_ERR);
-		parse_pos_and_color(fdf, temp, x, y);
+		}
+		if (!parse_pos_and_color(fdf, temp, x, y))
+		{
+			free_string_array(&split_line, x);
+			return (false);
+		}
 		free(split_line[x]);
 		x++;
 	}
@@ -84,20 +93,38 @@ static bool	parse_pos_and_color(t_app *fdf, char *temp[], int x, int y)
 
 	temp_val = ft_atoi_safe(temp[0]);
 	if (!temp_val)
-		exit_error(fdf, PARSING_ERR);
+	{
+		free_string_array(&temp, 0);
+		return (false);
+	}
 	val = *temp_val;
 	save_pixel_coordinates(fdf->world, x, y, val);
-	free(temp[0]);
 	if (temp[1])
 	{
 		temp_val = ft_atoi_hexadecimal_safe(temp[1]);
 		if (!temp_val)
-			exit_error(fdf, PARSING_ERR);
+		{
+			free_string_array(&temp, 0);
+			return (false);
+		}
 		fdf->world[y][x].color = *temp_val;
-		free(temp[1]);
 	}
 	else
 		fdf->world[y][x].color = -1;
-	free(temp);
+	free_string_array(&temp, 0);
 	return (true);
+}
+
+static void	free_string_array(char **arr[], int i)
+{
+	if (!*arr)
+		return ;
+	while ((*arr)[i])
+	{
+		free((*arr)[i]);
+		(*arr)[i] = NULL;
+		i++;
+	}
+	free(*arr);
+	*arr = NULL;
 }
