@@ -6,20 +6,21 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 12:24:27 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 12:53:06 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/25 13:14:15 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
 
-static void	draw_line_between_two_points(t_app *fdf, int line_ends[]);
-static void	init_line_calc_struct(t_line_calc *line, int line_ends[]);
-static void	store_line_ends(t_app *fdf, int end, int x, int y);
+static void	draw_line_between_two_points(t_app *fdf, t_line_calc *line);
+static void	init_line_calc_struct(t_line_calc *line);
+static void	calculate_color_change(t_line_calc *line);
 
 void	draw_lines_between_points(t_app *fdf)
 {
-	int	x;
-	int	y;
+	t_line_calc	line;
+	int			x;
+	int			y;
 
 	y = 0;
 	while (y < fdf->matrix_height)
@@ -27,16 +28,16 @@ void	draw_lines_between_points(t_app *fdf)
 		x = 0;
 		while (x < fdf->matrix_width)
 		{
-			store_line_ends(fdf, 0, x, y);
+			store_line_start(fdf, &line, x, y);
 			if (x + 1 < fdf->matrix_width)
 			{
-				store_line_ends(fdf, 1, x + 1, y);
-				draw_line_between_two_points(fdf, fdf->line_ends);
+				store_line_end(fdf, &line, x + 1, y);
+				draw_line_between_two_points(fdf, &line);
 			}
 			if (y + 1 < fdf->matrix_height)
 			{
-				store_line_ends(fdf, 1, x, y + 1);
-				draw_line_between_two_points(fdf, fdf->line_ends);
+				store_line_end(fdf, &line, x, y + 1);
+				draw_line_between_two_points(fdf, &line);
 			}
 			x++;
 		}
@@ -44,51 +45,35 @@ void	draw_lines_between_points(t_app *fdf)
 	}
 }
 
-static void	store_line_ends(t_app *fdf, int end, int x, int y)
+static void	draw_line_between_two_points(t_app *fdf, t_line_calc *line)
 {
-	if (end == 0)
-	{
-		fdf->line_ends[X0] = fdf->screen[y][x].x;
-		fdf->line_ends[Y0] = fdf->screen[y][x].y;
-	}
-	if (end == 1)
-	{
-		fdf->line_ends[X1] = fdf->screen[y][x].x;
-		fdf->line_ends[Y1] = fdf->screen[y][x].y;
-	}
-}
+	int	color;
 
-static void	draw_line_between_two_points(t_app *fdf, int line_ends[])
-{
-	t_line_calc	line;
-
-	init_line_calc_struct(&line, line_ends);
+	init_line_calc_struct(line);
+	calculate_color_change(line);
 	while (true)
 	{
-		pixel_to_image(fdf, line.x0, line.y0, fdf->default_color);
-		if (line.x0 == line.x1
-			&& line.y0 == line.y1)
+		color = line->start_color + line->color_change;
+		pixel_to_image(fdf, line->x0, line->y0, color);
+		if (line->x0 == line->x1
+			&& line->y0 == line->y1)
 			break ;
-		line.e2 = 2 * line.err;
-		if (line.e2 >= line.dy)
+		line->e2 = 2 * line->err;
+		if (line->e2 >= line->dy)
 		{
-			line.err += line.dy;
-			line.x0 += line.sx;
+			line->err += line->dy;
+			line->x0 += line->sx;
 		}
-		if (line.e2 <= line.dx)
+		if (line->e2 <= line->dx)
 		{
-			line.err += line.dx;
-			line.y0 += line.sy;
+			line->err += line->dx;
+			line->y0 += line->sy;
 		}
 	}
 }
 
-static void	init_line_calc_struct(t_line_calc *line, int line_ends[])
+static void	init_line_calc_struct(t_line_calc *line)
 {
-	line->x0 = line_ends[X0];
-	line->y0 = line_ends[Y0];
-	line->x1 = line_ends[X1];
-	line->y1 = line_ends[Y1];
 	line->dx = abs(line->x1 - line->x0);
 	if (line->x0 < line->x1)
 		line->sx = 1;
@@ -100,4 +85,17 @@ static void	init_line_calc_struct(t_line_calc *line, int line_ends[])
 	else
 		line->sy = -1;
 	line->err = line->dx + line->dy;
+}
+
+static void	calculate_color_change(t_line_calc *line)
+{
+	int	line_len;
+	int	color_diff;
+
+	line_len = round(sqrt(pow(line->dx, 2) + pow(line->dy, 2)));
+	color_diff = line->end_color - line->start_color;
+	if (line_len != 0)
+		line->color_change = color_diff / line_len;
+	else
+		line->color_change = 0;
 }

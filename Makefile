@@ -6,7 +6,7 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/07/24 11:34:09 by anpollan         ###   ########.fr        #
+#    Updated: 2025/07/25 12:13:21 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS 		= ./srcs/main.c \
 			  ./srcs/draw_pixels.c \
 			  ./srcs/calculate_projection.c \
 			  ./srcs/line_drawing.c \
+			  ./srcs/line_drawing2.c \
 			  ./srcs/hooks.c \
 			  ./srcs/manipulate_view.c \
 			  ./srcs/resetting.c \

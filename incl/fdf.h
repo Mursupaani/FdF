@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:52:36 by anpollan          #+#    #+#             */
-/*   Updated: 2025/07/24 12:47:06 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/07/25 13:14:52 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,14 @@
 # include <math.h>
 # include <limits.h>
 # include <float.h>
-//WARN: Is it okay to use?
 # include <X11/keysym.h>
 # include <X11/X.h>
-//WARN: Is it okay to use?
 # include "mlx.h"
 # include "mlx_int.h"
 # include "../libft/libft.h"
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 2000
+# define WIN_HEIGHT 2000
 
 typedef struct s_projection_pixel
 {
@@ -68,7 +66,7 @@ typedef struct s_app
 	float	proj_min_y;
 	float	proj_max_y;
 	int		default_color;
-	int		line_ends[4];
+	// int		line_ends[4];
 }	t_app;
 
 typedef struct s_matrix
@@ -90,6 +88,9 @@ typedef struct s_line_calculation
 	int	sy;
 	int	err;
 	int	e2;
+	int	start_color;
+	int	end_color;
+	int	color_change;
 }	t_line_calc;
 
 enum e_error_types
@@ -152,5 +153,7 @@ void	rotate_up_down(t_app *fdf, int keycode);
 void	change_z_depth(t_app *fdf, int keycode);
 void	count_matrix_width(t_app *fdf, char *line);
 int		count_matrix_dimensions(t_app *fdf);
+void	store_line_start(t_app *fdf, t_line_calc *line, int x, int y);
+void	store_line_end(t_app *fdf, t_line_calc *line, int x, int y);
 
 #endif
