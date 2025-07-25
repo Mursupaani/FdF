@@ -105,7 +105,7 @@ static bool	parse_pos_and_color(t_app *fdf, char *temp[], int x, int y)
 			free_string_array(&temp, 0);
 			return (false);
 		}
-		fdf->world[y][x].color = (unsigned int)*temp_val;
+		fdf->world[y][x].color = *temp_val;
 	}
 	else
 		fdf->world[y][x].color = -1;
