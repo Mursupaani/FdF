@@ -2,4 +2,5 @@ fdf
 *.o
 *.json
 *.sh
+*.a
 .cache/

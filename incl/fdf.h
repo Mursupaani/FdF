@@ -123,7 +123,7 @@ enum e_line_end_points
 	Y1
 }	;
 
-void	start_fdf(t_app *fdf);
+void	initialize_hooks(t_app *fdf);
 t_pixel	**parse_fdf_file(t_app *fdf);
 t_pixel	**initialize_pixel_matrix(t_app *fdf);
 void	save_pixel_coordinates(t_pixel **space, int x, int y, int z);
