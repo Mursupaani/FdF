@@ -17,7 +17,6 @@ SRCS_DIR	= ./srcs/
 INCL_DIR	= ./incl/
 SRCS 		= ./srcs/main.c \
 			  ./srcs/memory_and_error.c \
-			  ./srcs/fdf.c \
 			  ./srcs/parsing.c \
 			  ./srcs/parsing_utils.c \
 			  ./srcs/draw_pixels.c \
@@ -44,7 +43,7 @@ $(LIBFT):
 %.o: %.c $(HEADER)
 	cc $(C_FLAGS) -c $< -o $@
 
-clean: 
+clean:
 	rm -rf $(OBJS)
 	$(MAKE) -C libft clean
 

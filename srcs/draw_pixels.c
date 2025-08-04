@@ -12,7 +12,7 @@
 
 #include "../incl/fdf.h"
 
-void	draw_pixels_on_window(t_app *fdf)
+void	draw_pixels_on_image(t_app *fdf)
 {
 	int	x;
 	int	y;
@@ -47,19 +47,10 @@ void	draw_pixel(t_app *fdf, int x, int y)
 		fdf, fdf->screen[y][x].x, fdf->screen[y][x].y, color);
 }
 
-void	change_z_depth(t_app *fdf, int keycode)
-{
-	if (keycode == XK_w)
-		fdf->z_scalar += 0.1f;
-	if (keycode == XK_q)
-		fdf->z_scalar -= 0.1f;
-	update_image(fdf);
-}
-
 void	update_image(t_app *fdf)
 {
 	reset_image(fdf);
-	draw_pixels_on_window(fdf);
+	draw_pixels_on_image(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 	fdf->proj_min_x = FLT_MAX;
 	fdf->proj_max_x = FLT_MIN;

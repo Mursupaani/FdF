@@ -75,3 +75,12 @@ void	reset_view_settings(t_app *fdf)
 	fdf->proj_max_y = FLT_MIN;
 	fdf->default_color = 0xFFFFFF;
 }
+
+void	change_z_depth(t_app *fdf, int keycode)
+{
+	if (keycode == XK_w)
+		fdf->z_scalar += 0.1f;
+	if (keycode == XK_q)
+		fdf->z_scalar -= 0.1f;
+	update_image(fdf);
+}

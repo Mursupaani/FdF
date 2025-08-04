@@ -15,7 +15,8 @@
 static float calculate_x_projection(t_app *fdf, int x, int y);
 static float calculate_y_projection(t_app *fdf, int x, int y, int z);
 
-void calculate_projection_x_and_y(t_app *fdf, int x, int y) {
+void calculate_projection_x_and_y(t_app *fdf, int x, int y)
+{
   float z;
   float x_proj;
   float y_proj;
@@ -31,7 +32,8 @@ void calculate_projection_x_and_y(t_app *fdf, int x, int y) {
   fdf->screen[y][x].color = fdf->world[y][x].color;
 }
 
-void calculate_bounding_box(t_app *fdf) {
+void calculate_bounding_box(t_app *fdf)
+{
   int x;
   int y;
 
@@ -54,21 +56,24 @@ void calculate_bounding_box(t_app *fdf) {
   }
 }
 
-static float calculate_x_projection(t_app *fdf, int x, int y) {
+static float calculate_x_projection(t_app *fdf, int x, int y)
+{
   float x_proj;
 
   x_proj = (x - y) * cosf(deg_to_rad(fdf->x_proj_angle));
   return (x_proj);
 }
 
-static float calculate_y_projection(t_app *fdf, int x, int y, int z) {
+static float calculate_y_projection(t_app *fdf, int x, int y, int z)
+{
   float y_proj;
 
   y_proj = (x + y) * sinf(deg_to_rad(fdf->y_proj_angle)) - z;
   return (y_proj);
 }
 
-void calculate_centering_offset(t_app *fdf) {
+void calculate_centering_offset(t_app *fdf)
+{
   float map_width_proj;
   float map_height_proj;
   float win_x_mid;

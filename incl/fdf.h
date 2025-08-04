@@ -13,15 +13,8 @@
 #ifndef FDF_H
 # define FDF_H
 # include <unistd.h>
-# include <stdlib.h>
-# include <stdbool.h>
-# include <fcntl.h>
-# include <stdio.h>
 # include <math.h>
-# include <limits.h>
 # include <float.h>
-# include <X11/keysym.h>
-# include <X11/X.h>
 # include "mlx.h"
 # include "mlx_int.h"
 # include "../libft/libft.h"
@@ -39,33 +32,31 @@ typedef struct s_projection_pixel
 
 typedef struct s_app
 {
-	char	*file_path;
-	void	*mlx;
-	void	*mlx_win;
-	void	*img;
-	char	*img_pixels;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		screen_width;
-	int		screen_height;
-	int		matrix_width;
-	int		matrix_height;
-	float	img_scalar;
-	float	x_proj_angle;
-	float	y_proj_angle;
-	t_pixel	**world;
-	t_pixel	**screen;
-	float	z_scalar;
-	int		x_centering_offset;
-	int		y_centering_offset;
-	int		x_move_view;
-	int		y_move_view;
-	float	proj_min_x;
-	float	proj_max_x;
-	float	proj_min_y;
-	float	proj_max_y;
-	int		default_color;
+	char			*file_path;
+	void			*mlx;
+	void			*mlx_win;
+	void			*img;
+	char			*img_pixels;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	int				matrix_width;
+	int				matrix_height;
+	float			img_scalar;
+	float			x_proj_angle;
+	float			y_proj_angle;
+	t_pixel			**world;
+	t_pixel			**screen;
+	float			z_scalar;
+	int				x_centering_offset;
+	int				y_centering_offset;
+	int				x_move_view;
+	int				y_move_view;
+	float			proj_min_x;
+	float			proj_max_x;
+	float			proj_min_y;
+	float			proj_max_y;
+	unsigned int	default_color;
 }	t_app;
 
 typedef struct s_matrix
@@ -132,10 +123,6 @@ enum e_line_end_points
 	Y1
 }	;
 
-//WARN: Remove
-void	print_matrix(t_app *fdf, t_pixel **space);
-void	calculate_centering_offset(t_app *fdf);
-
 void	start_fdf(t_app *fdf);
 t_pixel	**parse_fdf_file(t_app *fdf);
 t_pixel	**initialize_pixel_matrix(t_app *fdf);
@@ -144,7 +131,8 @@ void	free_memory(t_app *fdf);
 void	exit_success(t_app *fdf);
 void	exit_error(t_app *fdf, int error);
 void	calculate_projection_x_and_y(t_app *fdf, int x, int y);
-void	draw_pixels_on_window(t_app *fdf);
+void	calculate_centering_offset(t_app *fdf);
+void	draw_pixels_on_image(t_app *fdf);
 void	pixel_to_image(t_app *fdf, int x, int y, int color);
 void	calculate_bounding_box(t_app *fdf);
 void	draw_pixel(t_app *fdf, int x, int y);

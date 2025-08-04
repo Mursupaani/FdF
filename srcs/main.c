@@ -27,8 +27,8 @@ int	main(int argc, char *argv[])
 	fdf = initialize_app(argv[1]);
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
-	start_fdf(fdf);
-	draw_pixels_on_window(fdf);
+	parse_fdf_file(fdf);
+	draw_pixels_on_image(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 	mlx_loop(fdf->mlx);
 	exit_success(fdf);
