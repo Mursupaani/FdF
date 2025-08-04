@@ -26,7 +26,6 @@ void	draw_pixels_on_window(t_app *fdf)
 		while (x < fdf->matrix_width)
 		{
 			draw_pixel(fdf, x, y);
-			// mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->img, 0, 0);
 			x++;
 		}
 		y++;

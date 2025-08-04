@@ -59,11 +59,6 @@ void	count_matrix_width(t_app *fdf, char *line)
 			i++;
 		if (!ft_strncmp(&line[i], "\n", 2) && (line[i + 1]) == '\0')
 			i++;
-		// if (!ft_isdigit(line[i]) && line[i] != ' ' && line[i] != '\0')
-		// {
-		// 	free(line);
-		// 	exit_error(fdf, PARSING_ERR);
-		// }
 	}
 	if (line_width > fdf->matrix_width)
 		fdf->matrix_width = line_width;
@@ -77,32 +72,3 @@ void	save_pixel_coordinates(t_pixel **space, int x, int y, int z)
 	space[y][x].y = y;
 	space[y][x].z = z;
 }
-
-// void	count_matrix_width(t_app *fdf, char *line)
-// {
-// 	int		line_width;
-// 	int		i;
-//
-// 	line_width = 0;
-// 	i = 0;
-// 	while (line[i])
-// 	{
-// 		if (ft_isdigit(line[i]) && line[i] != '\0')
-// 			line_width++;
-// 		while (ft_isdigit(line[i]) && line[i] != '\0')
-// 			i++;
-// 		while (line[i] == ' ' && line[i] != '\0')
-// 			i++;
-// 		if (line[i] == '-' || line[i] == '+')
-// 			i++;
-// 		if (!ft_strncmp(&line[i], "\n", 2) && (line[i + 1]) == '\0')
-// 			i++;
-// 		if (!ft_isdigit(line[i]) && line[i] != ' ' && line[i] != '\0')
-// 		{
-// 			free(line);
-// 			exit_error(fdf, PARSING_ERR);
-// 		}
-// 	}
-// 	if (line_width > fdf->matrix_width)
-// 		fdf->matrix_width = line_width;
-// }

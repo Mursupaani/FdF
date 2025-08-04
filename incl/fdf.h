@@ -66,7 +66,6 @@ typedef struct s_app
 	float	proj_min_y;
 	float	proj_max_y;
 	int		default_color;
-	// int		line_ends[4];
 }	t_app;
 
 typedef struct s_matrix
@@ -97,9 +96,9 @@ typedef struct s_line_calculation
 	unsigned char	end_g;
 	unsigned char	end_b;
 	unsigned int	cur_color;
-	unsigned char	cur_r;
-	unsigned char	cur_g;
-	unsigned char	cur_b;
+	float			cur_r_f;
+	float			cur_g_f;
+	float			cur_b_f;
 	float			r_change;
 	float			g_change;
 	float			b_change;

@@ -15,13 +15,13 @@
 void	move_view(t_app *fdf, int keycode)
 {
 	if (keycode == XK_Up)
-		fdf->y_move_view -= 20;
-	if (keycode == XK_Down)
 		fdf->y_move_view += 20;
+	if (keycode == XK_Down)
+		fdf->y_move_view -= 20;
 	if (keycode == XK_Left)
-		fdf->x_move_view -= 20;
-	if (keycode == XK_Right)
 		fdf->x_move_view += 20;
+	if (keycode == XK_Right)
+		fdf->x_move_view -= 20;
 	update_image(fdf);
 }
 
