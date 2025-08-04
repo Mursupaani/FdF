@@ -11,10 +11,12 @@
 /* ************************************************************************** */
 
 #include "../incl/fdf.h"
+#include <math.h>
 
 static void	draw_line_between_two_points(t_app *fdf, t_line_calc line);
 static void	init_line_calc_struct(t_line_calc *line);
 static void	calculate_color_change(t_line_calc *line);
+static void	calculate_current_color(t_line_calc *line);
 
 void	draw_lines_between_points(t_app *fdf)
 {
@@ -47,17 +49,13 @@ void	draw_lines_between_points(t_app *fdf)
 
 static void	draw_line_between_two_points(t_app *fdf, t_line_calc line)
 {
-	unsigned int	color;
-
 	init_line_calc_struct(&line);
 	calculate_color_change(&line);
-	color = line.start_color;
+	line.cur_color = line.start_color;
 	while (true)
 	{
-		color += ((int)line.r_change << 16) & 0xFFFFFFFF
-			+ ((int)line.g_change << 8) & 0xFFFFFFFF
-			+ line.g_change & 0xFFFFFFFF;
-		pixel_to_image(fdf, line.x0, line.y0, color);
+		calculate_current_color(&line);
+		pixel_to_image(fdf, line.x0, line.y0, line.cur_color);
 		if (line.x0 == line.x1
 			&& line.y0 == line.y1)
 			break ;
@@ -103,9 +101,9 @@ static void	calculate_color_change(t_line_calc *line)
 		r_diff = line->end_r - line->start_r;
 		g_diff = line->end_g - line->start_g;
 		b_diff = line->end_b - line->start_b;
-		line->r_change = r_diff / line_len;
-		line->g_change = g_diff / line_len;
-		line->b_change = b_diff / line_len;
+		line->r_change = (float)r_diff / line_len;
+		line->g_change = (float)g_diff / line_len;
+		line->b_change = (float)b_diff / line_len;
 	}
 	else
 	{
@@ -113,4 +111,16 @@ static void	calculate_color_change(t_line_calc *line)
 		line->g_change = 0;
 		line->b_change = 0;
 	}
+}
+
+static void	calculate_current_color(t_line_calc *line)
+{
+	unsigned char	cur_r;
+	unsigned char	cur_g;
+	unsigned char	cur_b;
+
+	cur_r = roundf((float)(line->cur_color >> 16 & 0xFF) + line->r_change);
+	cur_g = roundf((float)(line->cur_color >> 8 & 0xFF) + line->g_change);
+	cur_b = roundf((float)(line->cur_color & 0xFF) + line->b_change);
+	line->cur_color = (cur_r << 16) + (cur_g << 8) + cur_b;
 }

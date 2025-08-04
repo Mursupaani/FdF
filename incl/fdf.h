@@ -78,27 +78,31 @@ typedef struct s_matrix
 
 typedef struct s_line_calculation
 {
-	int		x0;
-	int		y0;
-	int		x1;
-	int		y1;
-	int		dx;
-	int		sx;
-	int		dy;
-	int		sy;
-	int		err;
-	int		e2;
-	int		start_color;
-	char	start_r;
-	char	start_g;
-	char	start_b;
-	char	end_r;
-	char	end_g;
-	char	end_b;
-	int		end_color;
-	int		r_change;
-	int		g_change;
-	int		b_change;
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
+	int				dx;
+	int				sx;
+	int				dy;
+	int				sy;
+	int				err;
+	int				e2;
+	unsigned int	start_color;
+	unsigned char	start_r;
+	unsigned char	start_g;
+	unsigned char	start_b;
+	unsigned int	end_color;
+	unsigned char	end_r;
+	unsigned char	end_g;
+	unsigned char	end_b;
+	unsigned int	cur_color;
+	unsigned char	cur_r;
+	unsigned char	cur_g;
+	unsigned char	cur_b;
+	float			r_change;
+	float			g_change;
+	float			b_change;
 }	t_line_calc;
 
 enum e_error_types
