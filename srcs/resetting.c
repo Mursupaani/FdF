@@ -20,6 +20,8 @@ void	reset_image(t_app *fdf)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(
 			fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
+	if (!fdf->img_pixels)
+		exit_error(fdf, MLX_IMG_ERR);
 }
 
 void	reset_view(t_app *fdf)

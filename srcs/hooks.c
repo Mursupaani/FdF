@@ -12,6 +12,13 @@
 
 #include "../incl/fdf.h"
 
+void	initialize_hooks(t_app *fdf)
+{
+	mlx_key_hook(fdf->mlx_win, keypress_hook, fdf);
+	mlx_mouse_hook(fdf->mlx_win, mouse_hook, fdf);
+	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
+}
+
 int	mouse_hook(int button, int x, int y, void *param)
 {
 	t_app	*fdf;

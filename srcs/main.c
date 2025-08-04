@@ -14,7 +14,7 @@
 
 static t_app	*initialize_app(char *file_path);
 static bool		is_fdf_file(const char *filename);
-static void		initialize_hooks(t_app *fdf);
+static void		initialize_mlx(t_app *fdf);
 
 int	main(int argc, char *argv[])
 {
@@ -55,6 +55,20 @@ static t_app	*initialize_app(char *file_path)
 	fdf = (t_app *)ft_calloc(1, sizeof(t_app));
 	if (!fdf)
 		exit_error(fdf, FDF_STRUCT_ERR);
+	initialize_mlx(fdf);
+	fdf->file_path = file_path;
+	fdf->world = NULL;
+	fdf->screen = NULL;
+	fdf->matrix_height = 0;
+	fdf->matrix_width = 0;
+	fdf->default_color = 0xFFFFFF;
+	reset_view_settings(fdf);
+	initialize_hooks(fdf);
+	return (fdf);
+}
+
+static void	initialize_mlx(t_app *fdf)
+{
 	fdf->mlx = mlx_init();
 	if (!fdf->mlx)
 		exit_error(fdf, MLX_INIT_ERR);
@@ -66,15 +80,8 @@ static t_app	*initialize_app(char *file_path)
 		exit_error(fdf, MLX_IMG_ERR);
 	fdf->img_pixels = mlx_get_data_addr(
 			fdf->img, &fdf->bits_per_pixel, &fdf->line_length, &fdf->endian);
-	fdf->file_path = file_path;
-	fdf->world = NULL;
-	fdf->screen = NULL;
-	fdf->matrix_height = 0;
-	fdf->matrix_width = 0;
-	fdf->default_color = 0xFFFFFF;
-	reset_view_settings(fdf);
-	initialize_hooks(fdf);
-	return (fdf);
+	if (!fdf->img_pixels)
+		exit_error(fdf, MLX_IMG_ERR);
 }
 
 static bool	is_fdf_file(const char *filename)
@@ -88,11 +95,4 @@ static bool	is_fdf_file(const char *filename)
 		return (true);
 	else
 		return (false);
-}
-
-static void	initialize_hooks(t_app *fdf)
-{
-	mlx_key_hook(fdf->mlx_win, keypress_hook, fdf);
-	mlx_mouse_hook(fdf->mlx_win, mouse_hook, fdf);
-	mlx_hook(fdf->mlx_win, DestroyNotify, 0, destroy_notify_hook, fdf);
 }

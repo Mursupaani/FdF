@@ -25,8 +25,6 @@ t_pixel	**initialize_pixel_matrix(t_app *fdf)
 	space = (t_pixel **)malloc(sizeof(t_pixel *) * fdf->matrix_height);
 	if (!space)
 		exit_error(fdf, MALLOC_ERR);
-	if (!space)
-		exit_error(fdf, MALLOC_ERR);
 	i = 0;
 	while (i < fdf->matrix_height)
 	{
