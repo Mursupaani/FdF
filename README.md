@@ -1,4 +1,4 @@
-[Screenshot](./Screenshot.png)
+![Screenshot](./Screenshot.png)
 
 # FDF
 
