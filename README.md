@@ -1,3 +1,5 @@
+[Screenshot](./Screenshot.png)
+
 # FDF
 
 The goal of the "FDF" project is to represent a 3D landscape in a wireframe model using the MLX42 graphics library. 
